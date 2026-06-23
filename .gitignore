@@ -1,0 +1,82 @@
+# =============================================================================
+# GENERAL
+# =============================================================================
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor directories and files
+.idea
+.vscode/
+*.swp
+*.bak
+
+
+# =============================================================================
+# SENSITIVE INFORMATION
+# Should never be committed to the repository.
+# =============================================================================
+.env
+.env.local
+.env.*.local
+.secret
+keystore/
+secrets.json
+
+
+# =============================================================================
+# FRONTEND (kstayble-fe / Next.js / PNPM)
+# =============================================================================
+
+# Dependencies
+kstayble-fe/node_modules/
+
+# Next.js build output and cache
+kstayble-fe/.next/
+kstayble-fe/out/
+
+# Other build artifacts
+kstayble-fe/build/
+kstayble-fe/dist/
+
+
+# =============================================================================
+# SMART CONTRACTS (kstayble-contracts / Foundry)
+# =============================================================================
+
+# Compiled artifacts and cache
+kstayble-contracts/out/
+kstayble-contracts/cache/
+
+# Foundry dependencies
+# Note: Since you have a .gitmodules file, `lib` is likely managed by `forge install`.
+# It's common practice to ignore the contents to keep the repo clean.
+kstayble-contracts/lib/
+
+# Test reports and coverage
+kstayble-contracts/coverage/
+kstayble-contracts/lcov.info
+broadcast/
+
+
+# =============================================================================
+# PRIVATE / INTERNAL — do not publish
+# =============================================================================
+# Team chat export (private)
+ChatExport_2026-06-23/
+# Internal review notes (kept local, not for the public repo)
+docs/FEEDBACK.md
+docs/DESIGN_DIAGNOSIS.md
