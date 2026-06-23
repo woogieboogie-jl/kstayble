@@ -25,7 +25,7 @@ const TABS: { key: ServiceCategory; labelKey: string }[] = [
 
 export default function HomePage() {
   const router = useRouter()
-  const { session } = useApp()
+  const { session, openCopilot } = useApp()
   const { t } = useLang()
   const [activeTab, setActiveTab] = useState<ServiceCategory>("food")
   const [showReceive, setShowReceive] = useState(false)
@@ -37,7 +37,7 @@ export default function HomePage() {
 
   const onQuickAction = (key: string) => {
     if (key === "topup") setShowTopUp(true)
-    else if (key === "ai") router.push("/ai")
+    else if (key === "ai") openCopilot()
     else if (key === "medical") setActiveTab("medical")
     else if (key === "mobility") router.push("/wallet")
   }

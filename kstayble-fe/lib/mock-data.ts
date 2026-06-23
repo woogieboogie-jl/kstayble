@@ -2,11 +2,14 @@
 // components. Swap for live data once the OmniOne/payment adapters land.
 
 import type {
+  Activity,
   AppNotification,
   BenefitOffer,
   ChainEvent,
+  ConnectMessage,
   Identity,
   KPassCapsule,
+  Peer,
   ServiceItem,
   Session,
   Transaction,
@@ -256,3 +259,101 @@ export const BADGE_BANNER = {
   subtitle: "7th Pre-Order Sale",
   image: "/korean-tiger-badge.png",
 }
+
+// ---- Verified Connect: activities + people (all DID-verified) --------------
+
+export const ACTIVITIES: Activity[] = [
+  {
+    id: "act-1",
+    category: "food",
+    title: "한강 치맥 번개 🍗",
+    host: "김민준",
+    hostFlag: "🇰🇷",
+    hostPhoto: "/portraits/minjun.jpg",
+    hostType: "korean",
+    trustLevel: "premium",
+    place: "여의도 한강공원",
+    time: "오늘 19:00",
+    capacity: 6,
+    joined: 3,
+    participants: ["/portraits/minjun.jpg", "/portraits/peter.jpg", "/portraits/emma.jpg"],
+    costKRW: 18000,
+  },
+  {
+    id: "act-2",
+    category: "language",
+    title: "한국어 ↔ English 언어교환",
+    host: "이지은",
+    hostFlag: "🇰🇷",
+    hostPhoto: "/portraits/jieun.jpg",
+    hostType: "korean",
+    trustLevel: "verified",
+    place: "홍대 앞 카페",
+    time: "토 15:00",
+    capacity: 8,
+    joined: 5,
+    participants: ["/portraits/jieun.jpg", "/portraits/peter.jpg", "/portraits/amara.jpg", "/portraits/emma.jpg"],
+  },
+  {
+    id: "act-3",
+    category: "tour",
+    title: "경복궁 한복 투어",
+    host: "Nguyen Van A",
+    hostFlag: "🇻🇳",
+    hostPhoto: "/portraits/nguyen.jpg",
+    hostType: "long-term",
+    trustLevel: "verified",
+    place: "경복궁 정문",
+    time: "내일 14:00",
+    capacity: 4,
+    joined: 2,
+    participants: ["/portraits/nguyen.jpg", "/portraits/amara.jpg"],
+  },
+  {
+    id: "act-4",
+    category: "play",
+    title: "강남 보드게임 모임",
+    host: "김민준",
+    hostFlag: "🇰🇷",
+    hostPhoto: "/portraits/minjun.jpg",
+    hostType: "korean",
+    trustLevel: "premium",
+    place: "강남역 보드게임카페",
+    time: "일 16:00",
+    capacity: 6,
+    joined: 4,
+    participants: ["/portraits/minjun.jpg", "/portraits/emma.jpg"],
+  },
+  {
+    id: "act-5",
+    category: "tour",
+    title: "남산 야경 산책",
+    host: "Emma",
+    hostFlag: "🇺🇸",
+    hostPhoto: "/portraits/emma.jpg",
+    hostType: "foreigner",
+    trustLevel: "verified",
+    place: "남산서울타워",
+    time: "금 20:00",
+    capacity: 5,
+    joined: 2,
+    participants: ["/portraits/emma.jpg", "/portraits/peter.jpg"],
+  },
+]
+
+export const PEERS: Peer[] = [
+  { id: "p-1", name: "김민준", flag: "🇰🇷", photo: "/portraits/minjun.jpg", userType: "korean", trustLevel: "premium", role: "guide", bio: "서울 토박이 — 맛집·교통·행정 도와드려요", langs: ["KO", "EN"] },
+  { id: "p-2", name: "이지은", flag: "🇰🇷", photo: "/portraits/jieun.jpg", userType: "korean", trustLevel: "verified", role: "tutor", bio: "한국어 튜터 · 카페에서 편하게 언어교환", langs: ["KO", "EN"] },
+  { id: "p-3", name: "Nguyen Van A", flag: "🇻🇳", photo: "/portraits/nguyen.jpg", userType: "long-term", trustLevel: "verified", role: "buddy", bio: "5년차 서울러 · 동남아 친구 환영", langs: ["VI", "KO", "EN"] },
+  { id: "p-4", name: "Amara", flag: "🇺🇸", photo: "/portraits/amara.jpg", userType: "foreigner", trustLevel: "verified", role: "buddy", bio: "K-pop·전시 좋아해요 · 같이 다녀요", langs: ["EN"] },
+  { id: "p-5", name: "Peter Parker", flag: "🇺🇸", photo: "/portraits/peter.jpg", userType: "foreigner", trustLevel: "verified", role: "buddy", bio: "여행 3주차 · 같이 다닐 사람 찾아요", langs: ["EN", "KO"] },
+]
+
+/** Seeded demo chat room (with the 한강 치맥 host). */
+export const CONNECT_MESSAGES: ConnectMessage[] = [
+  { id: "m1", fromMe: false, text: "안녕하세요! 한강 치맥 번개 호스트 김민준이에요 🙂", time: "오후 5:02" },
+  { id: "m2", fromMe: true, text: "오 안녕하세요! 저도 참여 가능할까요?", time: "오후 5:04" },
+  { id: "m3", fromMe: false, text: "그럼요, K-Pass 검증된 분이라 바로 환영이에요. 7시에 여의도에서 봬요!", time: "오후 5:05" },
+  { id: "m4", fromMe: true, text: "치킨은 어떻게 주문해요?", time: "오후 5:06" },
+  { id: "m5", fromMe: false, text: "배민으로 같이 시키고 '같이 결제'로 1/n 해요. 1인 ₩18,000이에요 👍", time: "오후 5:07" },
+]

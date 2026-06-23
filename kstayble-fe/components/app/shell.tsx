@@ -3,10 +3,11 @@
 import type React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Bell, Home, Wallet, User, ChevronLeft, Signal, Wifi, BatteryFull } from "lucide-react"
+import { Bell, Home, Wallet, User, ChevronLeft, Signal, Wifi, BatteryFull, HeartHandshake } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useLang } from "@/lib/i18n/lang-provider"
 import { Seal } from "@/components/app/seal"
+import { SealCopilot } from "@/components/app/seal-copilot"
 
 export function PhoneFrame({
   children,
@@ -25,6 +26,7 @@ export function PhoneFrame({
           {children}
         </div>
         {!hideNav && <BottomNav />}
+        {!hideNav && <SealCopilot />}
       </div>
     </div>
   )
@@ -47,6 +49,7 @@ export function StatusBar() {
 const NAV_ITEMS = [
   { href: "/", labelKey: "nav.home", icon: Home },
   { href: "/wallet", labelKey: "nav.wallet", icon: Wallet },
+  { href: "/connect", labelKey: "nav.connect", icon: HeartHandshake },
   { href: "/alerts", labelKey: "nav.alerts", icon: Bell },
   { href: "/profile", labelKey: "nav.profile", icon: User },
 ] as const
@@ -56,7 +59,7 @@ export function BottomNav() {
   const { t } = useLang()
   return (
     <nav className="fixed bottom-0 left-1/2 z-50 w-full max-w-[420px] -translate-x-1/2 border-t border-border bg-card/95 backdrop-blur-md">
-      <div className="grid grid-cols-4 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
+      <div className="grid grid-cols-5 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
         {NAV_ITEMS.map(({ href, labelKey, icon: Icon }) => {
           const active = href === "/" ? pathname === "/" : pathname.startsWith(href)
           return (

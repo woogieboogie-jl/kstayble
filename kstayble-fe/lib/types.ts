@@ -124,6 +124,48 @@ export interface AppNotification {
   iconBg: string
 }
 
+// ---- Verified Connect (social / activities among DID-verified users) -------
+
+export type ActivityCategory = "food" | "tour" | "language" | "play"
+
+export interface Activity {
+  id: string
+  category: ActivityCategory
+  title: string
+  host: string
+  hostFlag: string
+  hostPhoto: string
+  hostType: UserType
+  trustLevel: TrustLevel
+  place: string
+  time: string
+  capacity: number
+  joined: number
+  participants: string[]
+  costKRW?: number
+}
+
+export type ConnectRole = "guide" | "buddy" | "tutor"
+
+export interface Peer {
+  id: string
+  name: string
+  flag: string
+  photo: string
+  userType: UserType
+  trustLevel: TrustLevel
+  role: ConnectRole
+  bio: string
+  langs: string[]
+}
+
+export interface ConnectMessage {
+  id: string
+  fromMe: boolean
+  text: string
+  time: string
+}
+
 /** Full session held by the AppProvider. */
 export interface Session {
   onboarded: boolean
