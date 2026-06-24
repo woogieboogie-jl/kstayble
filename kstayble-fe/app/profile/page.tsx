@@ -23,7 +23,7 @@ export default function ProfilePage() {
   const { capsule, identity, wallet } = session
 
   const name = capsule?.holderName ?? identity?.displayName ?? t("home.guest")
-  const email = `${name.split(" ")[0].toLowerCase()}@kstayble.io`
+  const email = `${name.split(" ")[0].toLowerCase()}@ktourid.io`
   const spent = transactions.filter((tx) => tx.amountKRW < 0).reduce((a, tx) => a + Math.abs(tx.amountKRW), 0)
   const showUsd = session.userType !== "korean"
 

@@ -51,7 +51,7 @@ export interface Wallet {
   balanceKRW: number
   /** approximate KRW per 1 USD, used for the tourist-facing USD readout */
   usdRate: number
-  provider: "k-stayble" | "external"
+  provider: "k-tour-id" | "external"
   connected: boolean
 }
 

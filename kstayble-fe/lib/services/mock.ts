@@ -143,7 +143,7 @@ export const mockWalletService: WalletService = {
       address: fakeHash(`wallet:${holderName}`).slice(0, 42),
       balanceKRW: 1_520_768,
       usdRate: 1381.7,
-      provider: "k-stayble",
+      provider: "k-tour-id",
       connected: true,
     }
   },

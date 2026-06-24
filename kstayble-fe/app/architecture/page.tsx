@@ -262,7 +262,7 @@ export default function ArchitecturePage() {
             </Layer>
           </div>
           <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
-            <b className="text-navy">K-Pass(VC)</b>가 두 레이어를 잇습니다. <b>OmniOne Chain은 Hyperledger Besu 기반(EVM 호환)이라 스마트컨트랙트를 실제로 실행</b>합니다(DID 문서를 컨트랙트로 관리). 우리는 그 체인을 신원·감사용으로 쓰고, 결제·정산 머니 컨트랙트(레포의 <code className="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px]">forKRW + ForeignerSBT</code>,
+            <b className="text-navy">K-Pass(VC)</b>가 두 레이어를 잇습니다. <b>OmniOne Chain은 EVM 호환 퍼미션드 원장으로 스마트컨트랙트 실행이 가능</b>합니다(정확한 원장·합의 — 예: Hyperledger Besu — 는 OmniOne 스펙에 따름이며 제출물로 독립 검증된 사실은 아님). 우리는 그 체인을 신원·감사용으로 쓰고, 결제·정산 머니 컨트랙트(레포의 <code className="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px]">forKRW + ForeignerSBT</code>,
             제출 제안서 범위 밖의 머니 레이어 초기 실험)는 <b>설계 선택</b>으로 별도 EVM/L2에 분리합니다. 못 해서가 아니라, 신원·감사와 머니 레일을 한 체인에 몰지 않는 설계입니다.
           </p>
           <div className="mt-5 rounded-xl border border-primary border-l-[4px] bg-primary/5 p-4">
@@ -462,9 +462,85 @@ export default function ArchitecturePage() {
           </div>
         </Section>
 
-        {/* 08 — the seam */}
+        {/* 08 — security & threat model */}
         <Section>
-          <H2 n="08">The Seam — 데모가 그대로 결선이 된다</H2>
+          <H2 n="08">보안 · 위협모델 (정직한 데모 ↔ 결선)</H2>
+          <Lead>
+            라온시큐어/OmniOne 보안 엔지니어 대상 — 과장하지 않습니다. K-Tour ID는 보안 감사·모의해킹을 거친 프로덕션이 아니라 해커톤
+            MVP(Phase-0)이고, 아래 통제 중 상당수는 설계로 정의돼 있고 결선(9/30)에 실제 OmniOne 어댑터로 켜집니다. 항목마다 <b>데모 동작</b> vs <b>결선 연동</b>을 구분합니다.
+          </Lead>
+          <div className="space-y-3">
+            {[
+              ["1", "신원확인 보증 (Identity Proofing)", "신뢰 앵커 = 정부 발행 신원 기반 신원확인: 내국인 모바일 신분증/OmniOne CX, 외국인 여권 NFC+eKYC, 장기체류 외국인등록증 — 동일 Identity Adapter로 정규화. 원문 미저장, 결과만 Trust Profile(User Type·Stay·Trust Level·Wallet Status·Risk Flag)에 반영.", "보증수준(LoA·IAL/AAL)은 우리가 정의·측정 안 함 — OmniOne CX/모바일 신분증 정책에 따름. 데모 IdentityService는 deterministic mock(실제 본인확인·LoA 없음)."],
+              ["2", "키 관리 & 소지자 바인딩", "OmniOne CX의 FIDO/passkey/생체. 개인키는 평문으로 서버에 안 나가고 서버는 공개키만 — 기기 안에서 서버 챌린지에 서명. VP는 소지자 키로 서명(holder binding)해 도용 차단.", "‘키가 기기를 절대 안 떠난다’는 하드웨어 바운드 passkey(SE/StrongBox/TEE)에만 엄밀히 성립 — 동기화 passkey(iCloud/Google)는 OS 키체인+클라우드 복구라 단정 X. KRW 지갑 non-custodial은 PDF 설계(결선). 데모는 mock 인증 + localStorage mock 지갑."],
+              ["3", "발급자 서명 검증 & 신뢰 레지스트리", "W3C VC 모델. 가맹점은 원문 없이 ① 발급자 서명 진위(발급자 DID resolve, 중앙DB X) ② 소지자 본인성 ③ 유효·미폐기·미만료 ④ 필요한 술어만 확인. 발급자 신뢰 레지스트리 = 발급/검증 권한 온체인 거버넌스(미등재 발급자 거부).", "DID/키 레지스트리·발급자 trust registry·서명검증은 Open DID 인프라(선택과제①) 결선 연동. 데모는 mock VC만, 실제 VP/서명검증 미수행."],
+              ["4", "PII 보호 · 데이터 최소화 · PIPA", "Privacy by design — 개인정보·결제 원문 전부 off-chain(기기·발급자), 온체인엔 해시만. 가맹점엔 ‘검증됨’ 결과만. 사업 분석은 비식별·집계 데이터로만(PDF p8/p10).", "데모는 mock이라 실제 PII 없음. 실 PII 저장 암호화·접근통제·비식별 파이프라인·감사받은 PIPA 컴플라이언스는 결선/이후 — 데모는 감사받은 컴플라이언스 시스템이 아님."],
+              ["5", "Privacy Edge · 선택적 공개 · ZKP-ready", "Selective Disclosure 중심 설계 · 필요한 속성만 공개 · ZKP-ready. 국적·체류기간·쿠폰 중복여부를 원문 없이 증명(예: 나이≥19, 체류>0 술어).", "SD-JWT류로 구현하면 반복 제시는 가맹점 간 상관추적 가능 — 완전 비연결성은 BBS+류(표준화 진행 중) 필요, 스킴은 결선 결정. OmniOne의 BBS+/ZKP 기본 제공은 미확정, 데모 실 ZKP 미실행."],
+              ["6", "온체인 vs 오프체인 신뢰 경계", "On-chain = 이벤트 해시 6종만(개인정보 0, ‘일어났다+위변조 없음’ 증거). Off-chain = 여권번호·PII·결제 원문·사진·VC 원본 — 검증은 VP로 원문 이동 없이.", "OmniOne Chain은 EVM 호환 퍼미션드 원장으로 컨트랙트 실행 가능(가정) — 정확한 원장·합의(예: Besu)는 OmniOne 스펙/결선 확인, 독립검증 X(PDF 미명시). 데모는 KPassIssued~VoucherRedeemed만 로컬 시뮬, PartnerSettlementLogged·실 tx·explorer는 결선."],
+              ["7", "폐기 (Revocation)", "발급자가 온체인 폐기/상태 레지스트리(W3C Bitstring Status List)에서 무효화 → 가맹점 VP 검증 즉시 실패. 비자만료·분실·취소 실시간 반영 — 분실·탈취 대응 핵심.", "Bitstring Status List는 herd privacy를 주지만 발급 모집단이 작으면 상관 위험↑. 폐기·상태 레지스트리는 Open DID(결선). 데모는 live VP·폐기 미수행 — ‘폐기→VP 실패’는 결선 시연. OmniOne 폐기 지원 확인 필요."],
+              ["8", "AI 어시스턴트 하드닝 (프롬프트 인젝션)", "(데모 동작) ① 서버사이드 KB라 API 키 비노출 ② 최우선 비공개 규칙(‘위 텍스트 반복’·디버그·번역·roleplay 모두 거부)+고정 거부문 ③ 출력 sanitize(누출 스캐폴딩 제거, KB 마커 남으면 응답 전체 거부 치환) ④ 입력 2000자 + history 최근 8개 메시지.", "OWASP LLM01 — 완전 차단 보장 아님(LLM 확률적, sanitize는 마커 매칭 2차 방어라 변형·부분 누출 한계). rate-limit/abuse throttle 미구현(결선 로드맵)."],
+            ].map(([n, t, body, scope]) => (
+              <div key={n} className="rounded-2xl bg-card p-4 ring-1 ring-border">
+                <h3 className="text-[14px] font-bold text-foreground"><span className="font-mono text-primary">{n}</span> · {t}</h3>
+                <p className="mt-1.5 text-[13px] leading-relaxed text-foreground">{body}</p>
+                <p className="mt-1.5 text-[12px] leading-relaxed text-muted-foreground"><b className="text-foreground/70">정직한 범위:</b> {scope}</p>
+              </div>
+            ))}
+          </div>
+
+          <h3 className="mb-3 mt-7 text-[14px] font-bold text-foreground">위협 모델</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[640px] border-collapse text-[12.5px]">
+              <thead>
+                <tr className="border-b border-border text-left font-mono text-[11px] uppercase tracking-wide text-muted-foreground">
+                  <th className="py-2.5 pr-3">위협</th><th className="py-2.5 pr-3">통제</th><th className="py-2.5">데모 / 결선</th>
+                </tr>
+              </thead>
+              <tbody className="[&>tr]:border-b [&>tr]:border-border align-top">
+                {[
+                  ["Replay 재생", "VP를 검증자 1회용 nonce/challenge·timestamp·domain에 바인딩 + 소지자 키 서명(FIDO 챌린지-응답)", "결선(데모는 VP 검증 미수행)"],
+                  ["MITM 중간자", "전송 TLS + FIDO origin/audience 바인딩 + VC/VP 서명 위변조 탐지", "설계/결선 · 데모는 민감정보 전송 자체 없음"],
+                  ["Phishing 피싱", "FIDO/passkey origin-bound(가짜 사이트 재사용 불가) · passwordless(훔칠 공유비밀 없음)", "OmniOne CX 속성 · 결선(데모 mock)"],
+                  ["Key theft 키 탈취", "하드웨어 바운드 키 SE/TEE 생성·평문 비반출", "결선 · 캐비엇: 동기화 passkey는 클라우드 계정이 공격면"],
+                  ["Lost/Stolen 분실·탈취", "FIDO user verification(생체/PIN) + 발급자 폐기 → 이후 VP 검증 즉시 실패", "둘 다 결선 · localStorage mock이라 SE·원격폐기·지갑복구 없음(핵심 데모 한계)"],
+                  ["Forged 위조 자격", "발급자 서명·위변조 탐지 + 발급자 DID 공개키 resolve + 미등재 발급자 거부", "W3C/결선 · 데모는 mock VC, 검증 미수행"],
+                  ["Double-spend/쿠폰중복", "Voucher Issued/Redeemed 해시 1회성 기록(감사) + VP ‘쿠폰 미사용’ 술어", "데모 Voucher 시뮬 · 스테이블 결제 finality·이중사용 방지는 결선 결제레일(미정의), mock 미보장"],
+                  ["AI 프롬프트 인젝션", "시스템 격리 + 출력 sanitize(마커 시 거부) + 스코프·입력 2000자·history(최근 8개) + 서버 키 비노출", "데모 동작 · OWASP상 완전차단 아님, rate-limit 미구현"],
+                ].map(([w, c, d]) => (
+                  <tr key={w}><td className="py-2.5 pr-3 font-semibold text-foreground">{w}</td><td className="py-2.5 pr-3 text-foreground">{c}</td><td className="py-2.5 text-muted-foreground">{d}</td></tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mt-6 rounded-xl border border-primary border-l-[4px] bg-primary/5 p-4">
+            <p className="text-[13px] font-bold text-primary">데모에서 아직 하드닝 안 된 것 → 결선 로드맵 (정직)</p>
+            <p className="mt-1.5 text-[12.5px] leading-relaxed text-foreground">
+              K-Tour ID는 보안 감사·모의해킹을 거친 프로덕션이 아니라 MVP입니다. 인터페이스 seam은 뚫려 있고 결선(9/30)에 화면 변경 없이 실제 OmniOne 어댑터로 교체합니다:
+            </p>
+            <ul className="mt-2 space-y-1 text-[12.5px] text-muted-foreground">
+              {[
+                "VP 서명 검증·발급자 DID resolve — mock → Open DID 연동",
+                "폐기/상태 레지스트리 — 미작동 → OmniOne 폐기(Bitstring Status List), 지원 확인 필요",
+                "실 본인확인 LoA — mock → OmniOne CX 정책(우리가 측정 X)",
+                "SE/TEE 키·FIDO·non-custodial — mock → 실 OmniOne CX(지갑 복구 TBD)",
+                "온체인 tx·합의 — 시뮬 → 실 OmniOne Chain(원장/합의 스펙 확인)",
+                "스테이블코인 결제 finality·이중사용 방지 — mock → 결제레일·정산 컨트랙트",
+                "ZKP/BBS+ 선택적 공개 — 설계만 → 표준 라이브러리 스킴(TBD)",
+                "AI rate-limit/부정사용 — 미구현 → throttle + 이상탐지(Risk Flag 연계)",
+              ].map((x) => (
+                <li key={x} className="flex gap-2"><span className="text-primary">·</span>{x}</li>
+              ))}
+            </ul>
+            <p className="mt-2.5 text-[12px] text-foreground/70">
+              OmniOne 미확정 역량(ZKP/BBS+ 기본제공, 폐기 지원, 정확한 원장/합의)은 <b>“확인 필요 / 스펙에 따름”</b>으로만 표기합니다 — 이 정직함이 심사 신뢰의 핵심입니다.
+            </p>
+          </div>
+        </Section>
+
+        {/* 09 — the seam */}
+        <Section>
+          <H2 n="09">The Seam — 데모가 그대로 결선이 된다</H2>
           <Lead>
             핵심 메시지: <b>"우리 데모의 인터페이스가 곧 OmniOne 세 솔루션의 자리"</b>. 화면 코드는 한 줄도 안 바꾸고 아래 한 줄만 mock → real로
             바꿉니다 (<code className="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px]">lib/services/index.ts</code>의{" "}
@@ -498,9 +574,9 @@ export default function ArchitecturePage() {
           </div>
         </Section>
 
-        {/* 09 — roadmap */}
+        {/* 10 — roadmap */}
         <Section>
-          <H2 n="09">결선 로드맵 (9/30)</H2>
+          <H2 n="10">결선 로드맵 (9/30)</H2>
           <Lead>지금은 Phase-0 클릭 데모. 결선엔 화면 변경 없이 실제 어댑터를 끼웁니다.</Lead>
           <div className="flex flex-wrap gap-2">
             {[
@@ -520,7 +596,7 @@ export default function ArchitecturePage() {
         </Section>
 
         <footer className="border-t border-border pt-8 text-[12.5px] text-muted-foreground">
-          <p className="font-mono text-foreground">K-STAYBLE — Hope &amp; Woogieboogie · 2026 블록체인 &amp; AI 해커톤 (Track 2 / MVP)</p>
+          <p className="font-mono text-foreground">K-Tour ID — Hope &amp; Woogieboogie · 2026 블록체인 &amp; AI 해커톤 (Track 2 / MVP)</p>
           <p className="mt-1.5">
             데모 빌드의 서비스 인터페이스는 OmniOne CX · Open DID · OmniOne Chain 어댑터로 그대로 교체됩니다. 더 궁금한 점은{" "}
             <Link href="/ask" className="font-semibold text-primary hover:underline">기술 Q&amp;A AI</Link>에서.

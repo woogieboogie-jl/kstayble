@@ -48,7 +48,7 @@ export const DEFAULT_WALLET: Wallet = {
   address: "0x1234567890abcdef1234567890abcdef12345678",
   balanceKRW: 1_520_768,
   usdRate: USD_RATE,
-  provider: "k-stayble",
+  provider: "k-tour-id",
   connected: true,
 }
 
