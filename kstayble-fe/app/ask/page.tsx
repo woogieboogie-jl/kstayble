@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Send, Loader2, ShieldCheck } from "lucide-react"
+import { Send, ShieldCheck } from "lucide-react"
 import { Seal } from "@/components/app/seal"
 import { ASK_SUGGESTIONS, matchFaq } from "@/lib/ask-fallback"
 
@@ -96,8 +96,10 @@ export default function AskPage() {
           ))}
           {busy && (
             <div className="flex justify-start">
-              <div className="flex items-center gap-1.5 rounded-2xl rounded-bl-md bg-card px-4 py-3 text-[13px] text-muted-foreground ring-1 ring-border">
-                <Loader2 className="h-3.5 w-3.5 animate-spin" /> 생각 중…
+              <div className="flex items-center gap-1.5 rounded-2xl rounded-bl-md bg-card px-4 py-4 ring-1 ring-border" aria-label="답변 작성 중">
+                <span className="h-2 w-2 animate-bounce rounded-full bg-primary/55 [animation-delay:-0.3s]" />
+                <span className="h-2 w-2 animate-bounce rounded-full bg-primary/55 [animation-delay:-0.15s]" />
+                <span className="h-2 w-2 animate-bounce rounded-full bg-primary/55" />
               </div>
             </div>
           )}
