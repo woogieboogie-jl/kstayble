@@ -123,9 +123,9 @@ export default function ArchitecturePage() {
 
         {/* 01 — OmniOne three solutions */}
         <Section>
-          <H2 n="01">라온시큐어 OmniOne — 세 솔루션이 꽂히는 자리</H2>
+          <H2 n="01">라온시큐어 OmniOne 스택 — 세 컴포넌트가 꽂히는 자리</H2>
           <Lead>
-            우리 아키텍처에는 OmniOne의 세 솔루션이 들어갈 <b>정확한 코드 seam</b>이 이미 뚫려 있습니다. 데모는 그 seam에 mock을,
+            우리 아키텍처에는 OmniOne 스택(CX 인증 · Open DID · OmniOne Chain)이 들어갈 <b>정확한 코드 seam</b>이 이미 뚫려 있습니다. 데모는 그 seam에 mock을,
             결선엔 실제 SDK를 끼웁니다.
           </Lead>
           <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
@@ -151,7 +151,7 @@ export default function ArchitecturePage() {
                 tag: "가점 +5%",
                 score: "+5%",
                 title: "OmniOne Chain",
-                body: "발급·결제·정산 이벤트를 해시로만 기록 + DID/키 레지스트리 + 폐기. 개인정보·원문은 절대 올리지 않음.",
+                body: "발급·결제·정산 이벤트를 해시로만 기록(선택과제②). DID/키 레지스트리·폐기는 Open DID 인프라로 결선 연동. 개인정보·원문은 안 올림.",
                 code: "ChainService.log()",
               },
             ].map((c) => (
@@ -170,7 +170,7 @@ export default function ArchitecturePage() {
             ))}
           </div>
           <p className="mt-4 text-[13px] text-muted-foreground">
-            한 줄: <b className="text-foreground">우리 데모의 인터페이스 3곳이 곧 OmniOne 세 솔루션의 자리</b>이고, 결선엔 어댑터만 교체합니다.
+            한 줄: <b className="text-foreground">우리 데모의 인터페이스 3곳이 곧 OmniOne 스택(CX·Open DID·Chain)의 자리</b>이고, 결선엔 어댑터만 교체합니다.
           </p>
         </Section>
 
@@ -187,9 +187,9 @@ export default function ArchitecturePage() {
               <Node tone="omn">OmniOne CX</Node>
             </Layer>
             <Layer tag="L2" title="신뢰 게이트웨이">
-              <Node tone="did">DID 생성 (did:omn:…)</Node>
+              <Node tone="did">DID 생성 (OmniOne DID)</Node>
               <Node tone="did">VC Manager · K-Pass 발급</Node>
-              <Node tone="did">DID 레지스트리 · 검증/폐기</Node>
+              <Node tone="did">VC·VP 발급·검증</Node>
               <span className="text-muted-foreground">↘</span>
               <Node>Open DID</Node>
             </Layer>
@@ -227,16 +227,16 @@ export default function ArchitecturePage() {
         <Section>
           <H2 n="03">체인은 "hash만" 올리나? — 진짜 하는 일 + 2-레이어</H2>
           <Lead>
-            데모는 체인을 이벤트 로그로만 보여줬지만, Open DID에서 체인의 본진은 <b>신원 인프라</b>입니다. "프로그래머블 머니"는 별도
+            우리 제안에서 OmniOne Chain의 정의된 역할은 <b>이벤트 해시 앵커(선택과제②)</b>이고, DID/키 레지스트리·폐기는 Open DID 인프라(결선 연동)입니다. "프로그래머블 머니"는 또 다른
             레이어 — 둘을 K-Pass(VC)가 잇습니다.
           </Lead>
-          <p className="mb-3 text-[14px] font-bold text-foreground">① 체인이 실제로 하는 일 — 수동 로그가 아니다</p>
+          <p className="mb-3 text-[14px] font-bold text-foreground">① 온체인 역할 — 이벤트 앵커(선택과제②) + Open DID 인프라(결선 연동)</p>
           <div className="mb-7 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {[
               ["DID · 키 레지스트리", "검증자가 발급자·소지자 공개키를 중앙 DB 없이 여기서 resolve해 서명 확인."],
               ["폐기 · 상태 레지스트리", "비자만료·분실·취소를 실시간 반영 — VP 검증이 즉시 실패. (결선 연동)"],
               ["발급자 신뢰 레지스트리", "누가 K-Pass를 발급·검증할 권한이 있는지 온체인 거버넌스."],
-              ["감사 이벤트 앵커 (hash)", "그 위에 얹은 기능 — 6개 이벤트 해시. 본진이 아니라 보너스."],
+              ["감사 이벤트 앵커 (hash)", "우리 제안에서 OmniOne Chain의 정의된 역할 — 6개 이벤트 해시로 감사·추적성."],
             ].map(([t, d]) => (
               <div key={t} className="rounded-xl bg-card p-4 ring-1 ring-border">
                 <h3 className="text-[14px] font-bold text-foreground">{t}</h3>
@@ -245,7 +245,7 @@ export default function ArchitecturePage() {
             ))}
           </div>
 
-          <p className="mb-3 text-[14px] font-bold text-foreground">② 2-레이어 — "스마트컨트랙트는 왜 없냐"의 정답</p>
+          <p className="mb-3 text-[14px] font-bold text-foreground">② 2-레이어 — 왜 머니 컨트랙트를 OmniOne Chain에 안 올렸나</p>
           <div className="flex flex-col gap-2.5">
             <Layer tag="신원" title="OmniOne Open DID">
               <Node tone="did">DID · 키 레지스트리</Node>
@@ -253,7 +253,7 @@ export default function ArchitecturePage() {
               <Node tone="did">발급자 trust registry</Node>
               <Node>감사 앵커(hash)</Node>
             </Layer>
-            <Layer tag="머니" title="EVM 컨트랙트">
+            <Layer tag="머니" title="EVM 컨트랙트 (개념 · 제안서 외 확장)">
               <Node tone="evm">forKRW 스테이블</Node>
               <Node tone="evm">바우처 redeem</Node>
               <Node tone="evm">1/n 에스크로</Node>
@@ -262,15 +262,14 @@ export default function ArchitecturePage() {
             </Layer>
           </div>
           <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
-            <b className="text-navy">K-Pass(VC)</b>가 두 레이어를 잇습니다. OmniOne Chain은 <b>DID 목적 permissioned 원장</b>이라,
-            프로그래머블 머니 컨트랙트(레포의 <code className="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px]">forKRW + ForeignerSBT</code>,
-            현재는 머니 레이어 개념을 보여주는 초기 실험)는 <b>EVM/L2</b>에 둡니다. 억지로 한 체인에 몰지 않는 게 더 정확한 그림입니다.
+            <b className="text-navy">K-Pass(VC)</b>가 두 레이어를 잇습니다. <b>OmniOne Chain은 Hyperledger Besu 기반(EVM 호환)이라 스마트컨트랙트를 실제로 실행</b>합니다(DID 문서를 컨트랙트로 관리). 우리는 그 체인을 신원·감사용으로 쓰고, 결제·정산 머니 컨트랙트(레포의 <code className="rounded bg-surface-2 px-1.5 py-0.5 font-mono text-[12px]">forKRW + ForeignerSBT</code>,
+            제출 제안서 범위 밖의 머니 레이어 초기 실험)는 <b>설계 선택</b>으로 별도 EVM/L2에 분리합니다. 못 해서가 아니라, 신원·감사와 머니 레일을 한 체인에 몰지 않는 설계입니다.
           </p>
           <div className="mt-5 rounded-xl border border-primary border-l-[4px] bg-primary/5 p-4">
-            <p className="text-[13px] font-bold text-primary">⭐ 데모 한 방 — 폐기(Revocation)</p>
+            <p className="text-[13px] font-bold text-primary">⭐ 결선 연동 — 폐기(Revocation)</p>
             <p className="mt-1.5 text-[13px] leading-relaxed text-foreground">
               발급자가 K-Pass를 온체인에서 무효화 → 가맹점 VP 검증이 즉시 실패. 신원 심사진이 가장 좋아하는 "체인이 능동적으로 일하는"
-              유즈케이스이자, 무대에서 한 컷으로 강력합니다. <span className="text-muted-foreground">(설계 완료, 결선에 OmniOne으로 연동.)</span>
+              유즈케이스이자, 무대에서 한 컷으로 강력합니다. <span className="text-muted-foreground">(제안서 외 추가 설계 — 결선에 OmniOne 폐기 레지스트리 연동 시 시연. OmniOne 지원 확인 필요.)</span>
             </p>
           </div>
         </Section>
@@ -292,7 +291,7 @@ export default function ArchitecturePage() {
                 {[
                   ["정체", "식별자 + 키", "그 식별자에 대한 서명된 증명서"],
                   ["여권 비유", "여권 번호 + 내 도장(개인키)", "여권 책자 (이름·국적·유효기간)"],
-                  ["담는 것", "did:omn:… → DID Document(공개키). 나에 대한 정보는 0", "발급자가 서명한 속성(체류·한도·등급·서비스)"],
+                  ["담는 것", "OmniOne DID → DID Document(공개키). 나에 대한 정보는 0", "발급자가 서명한 속성(체류·한도·등급·서비스)"],
                   ["역할", "신원 앵커", "그 위에 얹은 자격증명"],
                 ].map(([k, a, b]) => (
                   <tr key={k}>
@@ -442,7 +441,7 @@ export default function ArchitecturePage() {
               <tbody className="[&>tr]:border-b [&>tr]:border-border align-top">
                 <tr>
                   <td className="py-3 pr-4 font-bold text-primary">On-chain<br /><span className="font-normal text-muted-foreground">OmniOne Chain</span></td>
-                  <td className="py-3 pr-4 text-foreground">이벤트 해시만 (6종) + DID/키 레지스트리 + 폐기 상태</td>
+                  <td className="py-3 pr-4 text-foreground">이벤트 해시만 (6종); DID/키 레지스트리·폐기는 Open DID 인프라(결선)</td>
                   <td className="py-3 text-foreground">"일어났다 + 위변조 없음"의 공개 증거. 개인정보 0.</td>
                 </tr>
                 <tr>
@@ -454,11 +453,11 @@ export default function ArchitecturePage() {
             </table>
           </div>
           <div className="mt-5 rounded-xl bg-surface-2 p-4 ring-1 ring-border">
-            <p className="text-[14px] font-bold text-foreground">ZKP · 선택적 공개 (BBS+)</p>
+            <p className="text-[14px] font-bold text-foreground">ZKP-ready · 선택적 공개</p>
             <p className="mt-1.5 text-[13.5px] leading-relaxed text-muted-foreground">
-              발급자가 VC를 <b className="text-foreground">BBS+ 서명</b>으로 발급 → 소지자가 <b className="text-foreground">술어만 증명</b>(나이≥19,
+              발급자가 VC를 <b className="text-foreground">ZKP-friendly 서명(예: BBS+)</b>으로 발급 → 소지자가 <b className="text-foreground">술어만 증명</b>(나이≥19,
               체류&gt;0)하거나 고른 속성만 공개. 제시본이 <b className="text-foreground">비연결성(unlinkable)</b>이라 가맹점들이 같은 사용자를 추적할 수
-              없습니다. K-Stayble의 Privacy Edge는 이를 전제로 <b>설계</b>됐고, 실제 ZKP 연산은 <b>결선</b>에 OmniOne으로 붙습니다.
+              없습니다(비연결성 지향). 단 <b>OmniOne이 BBS+/ZKP를 기본 제공하는지는 공개 문서로 미확정</b>이라 단정하지 않고, Privacy Edge는 W3C VC Selective Disclosure 중심으로 설계 — 구체 서명·증명 스킴은 표준 라이브러리로 <b>결선</b>에 붙입니다.
             </p>
           </div>
         </Section>

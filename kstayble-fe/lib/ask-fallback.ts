@@ -31,8 +31,8 @@ export const ASK_FAQ: Faq[] = [
   },
   {
     keys: ["did", "vc", "차이", "difference", "다른", "verifiable credential", "캡슐", "capsule"],
-    a: "DID는 '식별자 + 키'입니다(did:omn:…). DID Document(공개키)로 resolve되며 '이 신원이 존재하고 서명을 검증할 수 있다'만 말합니다. VC(K-Pass Capsule)는 발급자가 서명한 '증명서'로, 소지자 DID에 대해 체류기간·결제한도·신뢰등급을 보증합니다. 즉 DID=신원 앵커, VC=그 위에 얹은 서명된 자격증명입니다.",
-    aEn: "A DID is an identifier + keys (did:omn:…) that resolves to a DID Document (public keys) — it only says 'this identity exists and you can verify its signatures.' A VC (the K-Pass Capsule) is a credential signed by an issuer that attests claims (stay period, payment limit, trust level) about the holder's DID. So DID = identity anchor, VC = signed claims on top of it.",
+    a: "DID는 '식별자 + 키'입니다(OmniOne DID). DID Document(공개키)로 resolve되며 '이 신원이 존재하고 서명을 검증할 수 있다'만 말합니다. VC(K-Pass Capsule)는 발급자가 서명한 '증명서'로, 소지자 DID에 대해 체류기간·결제한도·신뢰등급을 보증합니다. 즉 DID=신원 앵커, VC=그 위에 얹은 서명된 자격증명입니다.",
+    aEn: "A DID is an identifier + keys (OmniOne DID) that resolves to a DID Document (public keys) — it only says 'this identity exists and you can verify its signatures.' A VC (the K-Pass Capsule) is a credential signed by an issuer that attests claims (stay period, payment limit, trust level) about the holder's DID. So DID = identity anchor, VC = signed claims on top of it.",
   },
   {
     keys: ["가맹점", "vp", "검증", "verify", "면세", "presentation", "merchant", "verifier", "tax"],
@@ -41,8 +41,8 @@ export const ASK_FAQ: Faq[] = [
   },
   {
     keys: ["온체인", "오프체인", "on-chain", "off-chain", "프라이버시", "privacy", "해시", "hash", "개인정보", "pii"],
-    a: "온체인(OmniOne Chain)엔 이벤트 해시만 올라갑니다. 데모에서 발생하는 이벤트는 KPassIssued · WalletLinked · PaymentAuthorized · VoucherIssued · VoucherRedeemed 이고, PartnerSettlementLogged(정산)는 결선용으로 정의만 돼 있어요. DID·공개키 레지스트리와 폐기 상태도 체인에 둡니다. 여권번호·개인정보·결제 원문 같은 PII는 절대 온체인에 안 쓰고 기기/발급자에 오프체인 보관합니다(Privacy Edge). 그래서 국적·체류기간·쿠폰 자격을 원문 없이 증명합니다.",
-    aEn: "Only event hashes go on-chain (OmniOne Chain). The demo emits KPassIssued, WalletLinked, PaymentAuthorized, VoucherIssued and VoucherRedeemed; PartnerSettlementLogged is defined for the finals only. The DID/key registry and revocation status also live on-chain. PII — passport number, personal data, payment originals — is never written on-chain; it stays off-chain on the device/issuer (Privacy Edge), so nationality, stay period and coupon eligibility are proven without revealing the originals.",
+    a: "온체인(OmniOne Chain)엔 이벤트 해시만 올라갑니다. 데모에서 발생하는 이벤트는 KPassIssued · WalletLinked · PaymentAuthorized · VoucherIssued · VoucherRedeemed 이고, PartnerSettlementLogged(정산)는 결선용으로 정의만 돼 있어요. DID·공개키 레지스트리·폐기 상태는 Open DID 인프라로 결선에 연동됩니다. 여권번호·개인정보·결제 원문 같은 PII는 절대 온체인에 안 쓰고 기기/발급자에 오프체인 보관합니다(Privacy Edge). 그래서 국적·체류기간·쿠폰 자격을 원문 없이 증명합니다.",
+    aEn: "Only event hashes go on-chain (OmniOne Chain). The demo emits KPassIssued, WalletLinked, PaymentAuthorized, VoucherIssued and VoucherRedeemed; PartnerSettlementLogged is defined for the finals only. The DID/key registry and revocation status are Open DID infrastructure, wired at the finals. PII — passport number, personal data, payment originals — is never written on-chain; it stays off-chain on the device/issuer (Privacy Edge), so nationality, stay period and coupon eligibility are proven without revealing the originals.",
   },
   {
     keys: ["폐기", "revocation", "revoke", "취소", "만료", "분실", "비자", "expire", "lost", "visa"],
@@ -51,8 +51,8 @@ export const ASK_FAQ: Faq[] = [
   },
   {
     keys: ["omnione", "솔루션", "라온", "raon", "cx", "open did", "opendid", "필수", "가점", "세개", "3개", "세 개", "solution", "mandatory", "bonus"],
-    a: "세 가지가 코드 seam 3곳에 꽂힙니다. ① Mobile ID / OmniOne CX = 본인확인(필수 요소) → IdentityService.verify(). ② Open DID = K-Pass(VC) 발급·VP 검증·선택적 공개(가점 +5%) → CapsuleService.issue(). ③ OmniOne Chain = 이벤트 해시 기록 + DID/키 레지스트리 + 폐기(가점 +5%) → ChainService.log(). 데모는 이 자리에 mock을, 결선엔 실제 OmniOne SDK 어댑터를 교체만 합니다.",
-    aEn: "Three pieces plug into three code seams: (1) Mobile ID / OmniOne CX = identity proofing (mandatory) → IdentityService.verify(); (2) Open DID = K-Pass (VC) issuance + VP verification + selective disclosure (+5% bonus) → CapsuleService.issue(); (3) OmniOne Chain = event-hash logging + DID/key registry + revocation (+5% bonus) → ChainService.log(). The demo plugs mocks into these seams; the finals just swap in the real OmniOne SDK adapters.",
+    a: "세 가지가 코드 seam 3곳에 꽂힙니다. ① Mobile ID / OmniOne CX = 본인확인(필수 요소) → IdentityService.verify(). ② Open DID = K-Pass(VC) 발급·VP 검증·선택적 공개(가점 +5%) → CapsuleService.issue(). ③ OmniOne Chain = 이벤트 해시 기록(가점 +5%) → ChainService.log() — DID/키 레지스트리·폐기는 Open DID 인프라로 결선 연동. 데모는 이 자리에 mock을, 결선엔 실제 OmniOne SDK 어댑터를 교체만 합니다.",
+    aEn: "Three pieces plug into three code seams: (1) Mobile ID / OmniOne CX = identity proofing (mandatory) → IdentityService.verify(); (2) Open DID = K-Pass (VC) issuance + VP verification + selective disclosure (+5% bonus) → CapsuleService.issue(); (3) OmniOne Chain = event-hash logging (+5% bonus) → ChainService.log() — the DID/key registry and revocation are Open DID infrastructure (finals). The demo plugs mocks into these seams; the finals just swap in the real OmniOne SDK adapters.",
   },
   {
     keys: ["ai", "에이아이", "혜택", "router", "benefit", "코파일럿", "copilot", "추천", "쿠폰", "남은", "leftover"],
@@ -61,13 +61,13 @@ export const ASK_FAQ: Faq[] = [
   },
   {
     keys: ["스마트", "컨트랙트", "smart contract", "2-layer", "2레이어", "레이어", "layer", "evm", "프로그래머블", "programmable"],
-    a: "체인은 '해시 로그'만 하는 게 아니라 신원 인프라(DID/키 레지스트리·폐기·발급자 trust registry)가 본진입니다. '프로그래머블 머니'(스테이블코인 결제·바우처·1/n 에스크로·정산)는 별도 EVM 컨트랙트 레이어예요. 레포의 forKRW·ForeignerSBT는 이 머니 레이어를 보여주는 초기 실험이고(프로덕션 설계 아님), 실제 제품은 내·외국인 모두를 위한 원화 스테이블 결제를 목표로 합니다. OmniOne Chain은 DID 목적 원장이라 머니 컨트랙트는 EVM/L2에 두고, K-Pass(VC)가 두 레이어를 잇습니다.",
-    aEn: "The chain isn't just a hash log — its core role is identity infrastructure (DID/key registry, revocation, issuer trust registry). 'Programmable money' (stablecoin payments, vouchers, 1/n split escrow, settlement) is a separate EVM-contract layer. The repo's forKRW + ForeignerSBT are an early experiment illustrating that money layer (not the production design); the product targets KRW-stablecoin payments for Koreans and foreigners alike. OmniOne Chain is a DID-purpose ledger, so money contracts live on EVM/L2, and the K-Pass (VC) bridges the two.",
+    a: "우리 제안에서 OmniOne Chain의 정의된 역할은 이벤트 해시 앵커예요. DID/키 레지스트리·폐기·발급자 trust registry는 Open DID 인프라로 결선에 연동됩니다. '프로그래머블 머니'(스테이블코인 결제·바우처·1/n 에스크로·정산)는 별도 EVM 컨트랙트 레이어예요. 레포의 forKRW·ForeignerSBT는 머니 레이어 개념의 초기 실험으로 제출 제안서 범위 밖이에요. 중요한 점: OmniOne Chain은 Hyperledger Besu 기반(EVM 호환)이라 스마트컨트랙트를 실제로 실행해요(DID 문서를 컨트랙트로 관리) — 못 해서가 아니라 설계상 머니 컨트랙트만 별도 EVM/L2에 둡니다. K-Pass(VC)가 두 레이어를 잇습니다.",
+    aEn: "In our proposal, OmniOne Chain's defined role is the event-hash anchor; the DID/key registry, revocation and issuer trust registry are Open DID infrastructure (finals). 'Programmable money' (stablecoin payments, vouchers, 1/n split escrow, settlement) is a separate EVM-contract layer. The repo's forKRW + ForeignerSBT are an early experiment of that money layer, beyond the submitted proposal's scope. Important: OmniOne Chain is a Hyperledger Besu (EVM-compatible) ledger that actually runs smart contracts (it manages DID documents via contract code) — we keep money contracts on a separate EVM/L2 by design choice, not because it can't run them. The K-Pass (VC) bridges the two layers.",
   },
   {
     keys: ["zkp", "영지식", "zero", "선택적", "selective", "bbs", "unlink"],
-    a: "Open DID는 BBS+ 기반 영지식 선택적 공개를 지원하고, K-Stayble의 Privacy Edge는 이를 전제로 설계했어요. 값을 안 까고 술어만 증명(나이≥19, 체류>0)하거나 고른 속성만 공개하며, 제시본이 비연결성(unlinkable)이라 가맹점들이 같은 사용자를 추적할 수 없습니다. 데모엔 실제 ZKP 연산은 아직 없고, 결선에서 OmniOne으로 붙입니다.",
-    aEn: "Open DID supports BBS+ zero-knowledge selective disclosure, and K-Stayble's Privacy Edge is designed on it: prove a predicate (age ≥ 19, stay > 0) or reveal only chosen attributes, with unlinkable presentations so merchants can't correlate the same user. The demo doesn't run real ZKP yet — it's added in the finals via OmniOne.",
+    a: "Privacy Edge는 'Selective Disclosure · ZKP-ready'로 설계됐어요(PDF 표기). 값을 안 까고 술어만 증명(나이≥19, 체류>0)하거나 고른 속성만 공개하고, ZKP-friendly 서명(예: BBS+)은 비연결성도 지향할 수 있어요. 다만 OmniOne이 BBS+/ZKP를 기본 제공하는지는 공개 문서로 미확정이라 단정하지 않고, 구체 스킴은 표준 라이브러리로 결선에 붙이는 걸 목표로 합니다. 데모엔 실제 ZKP 연산은 아직 없어요.",
+    aEn: "Privacy Edge is designed as 'Selective Disclosure · ZKP-ready' (the PDF's term). The holder can reveal only chosen attributes or prove a predicate (age ≥ 19, stay > 0) without originals, and ZKP-friendly signatures (e.g., BBS+) can target unlinkability. We don't assert OmniOne ships BBS+/ZKP (unconfirmed in public docs); the specific scheme is a finals goal via standard libraries. The demo doesn't run real ZKP yet.",
   },
   {
     keys: ["결선", "로드맵", "roadmap", "finals", "real", "실제", "다음", "9/30", "프로덕션", "production"],
