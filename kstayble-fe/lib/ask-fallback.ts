@@ -18,7 +18,7 @@ export const ASK_SUGGESTIONS = [
 export const ASK_FAQ: Faq[] = [
   {
     keys: ["온체인", "오프체인", "on-chain", "off-chain", "프라이버시", "privacy", "해시", "hash", "개인정보"],
-    a: "온체인(OmniOne Chain)엔 이벤트 해시만 올라갑니다 — KPassIssued·WalletLinked·PaymentAuthorized·VoucherIssued·VoucherRedeemed·PartnerSettlementLogged. 그리고 DID·공개키 레지스트리와 폐기 상태가 체인에 있습니다. 여권번호·개인정보·결제 원문 같은 PII는 절대 온체인에 쓰지 않고 기기/발급자에 오프체인 보관합니다(Privacy Edge). 그래서 국적·체류기간·쿠폰 자격을 원문 없이 증명합니다.",
+    a: "온체인(OmniOne Chain)엔 이벤트 해시만 올라갑니다 — KPassIssued · WalletLinked · PaymentAuthorized · VoucherIssued · VoucherRedeemed · PartnerSettlementLogged. 그리고 DID·공개키 레지스트리와 폐기 상태가 체인에 있습니다. 여권번호·개인정보·결제 원문 같은 PII는 절대 온체인에 쓰지 않고 기기/발급자에 오프체인 보관합니다(Privacy Edge). 그래서 국적·체류기간·쿠폰 자격을 원문 없이 증명합니다.",
   },
   {
     keys: ["did", "vc", "차이", "difference", "다른", "verifiable credential", "캡슐", "capsule"],

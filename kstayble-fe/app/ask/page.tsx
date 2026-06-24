@@ -72,8 +72,8 @@ export default function AskPage() {
               <div
                 className={
                   m.role === "user"
-                    ? "max-w-[82%] rounded-2xl rounded-br-md bg-primary px-4 py-2.5 text-[14px] leading-relaxed text-white"
-                    : "max-w-[88%] rounded-2xl rounded-bl-md bg-card px-4 py-3 text-[14px] leading-relaxed text-foreground ring-1 ring-border"
+                    ? "max-w-[82%] whitespace-pre-wrap break-words [overflow-wrap:anywhere] rounded-2xl rounded-br-md bg-primary px-4 py-2.5 text-[14px] leading-relaxed text-white"
+                    : "max-w-[88%] whitespace-pre-wrap break-words [overflow-wrap:anywhere] rounded-2xl rounded-bl-md bg-card px-4 py-3 text-[14px] leading-relaxed text-foreground ring-1 ring-border"
                 }
               >
                 {m.text}
