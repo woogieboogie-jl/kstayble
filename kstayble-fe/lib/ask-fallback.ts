@@ -20,7 +20,7 @@ export const ASK_SUGGESTIONS = [
 
 export const ASK_FAQ: Faq[] = [
   {
-    keys: ["뭐", "무엇", "what is", "소개", "프로젝트", "kstayble", "k-stayble", "스테이블", "about"],
+    keys: ["뭐예요", "뭔가요", "뭐하는", "소개", "프로젝트", "what is", "what's", "kstayble", "k-stayble", "about"],
     a: "K-Stayble은 AI 기반 '관광 신뢰 지갑'입니다. 내국인(모바일 신분증)·외국인 관광객(여권 DID)·장기체류 외국인 누구든 K-Pass Capsule(VC) 한 장을 발급받아, 신원 소스가 달라도 서비스 권한(체류·결제한도·자격·혜택)을 표준화합니다. 원화 스테이블 지갑으로 교통·식사·쇼핑을 결제하고, 모든 신뢰 이벤트는 OmniOne Chain에 기록되며, AI가 남은 원화를 쿠폰으로 전환합니다.",
     aEn: "K-Stayble is an AI 'tourist trust wallet.' Korean residents (Mobile ID), foreign tourists (Passport DID) and long-stay foreigners each get one K-Pass Capsule (a VC), so a different identity source still standardizes into the same service permissions (stay, payment limit, eligibility, benefits). You pay for transit/food/shopping from a KRW-stablecoin wallet, every trust event is logged on the OmniOne Chain, and the AI turns leftover KRW into coupons.",
   },
