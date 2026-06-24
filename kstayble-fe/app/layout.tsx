@@ -21,9 +21,10 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#0b0b10",
+  themeColor: "#1c1813", // 먹 ink — matches the warm palette
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover", // so env(safe-area-inset-*) resolves on notched iOS
 }
 
 export default function RootLayout({
