@@ -132,13 +132,16 @@ export interface Activity {
   id: string
   category: ActivityCategory
   title: string
+  titleEn?: string
   host: string
   hostFlag: string
   hostPhoto: string
   hostType: UserType
   trustLevel: TrustLevel
   place: string
+  placeEn?: string
   time: string
+  timeEn?: string
   capacity: number
   joined: number
   participants: string[]
@@ -156,6 +159,7 @@ export interface Peer {
   trustLevel: TrustLevel
   role: ConnectRole
   bio: string
+  bioEn?: string
   langs: string[]
 }
 
@@ -163,7 +167,9 @@ export interface ConnectMessage {
   id: string
   fromMe: boolean
   text: string
+  textEn?: string
   time: string
+  timeEn?: string
 }
 
 /** Full session held by the AppProvider. */

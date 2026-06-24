@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Bell, Home, Wallet, User, ChevronLeft, Signal, Wifi, BatteryFull, HeartHandshake } from "lucide-react"
@@ -34,9 +35,19 @@ export function PhoneFrame({
 
 /** Fake iOS status bar so screenshots read as a real device. */
 export function StatusBar() {
+  const [time, setTime] = useState("9:41")
+  useEffect(() => {
+    const tick = () => {
+      const d = new Date()
+      setTime(`${d.getHours()}:${String(d.getMinutes()).padStart(2, "0")}`)
+    }
+    tick()
+    const id = setInterval(tick, 30_000)
+    return () => clearInterval(id)
+  }, [])
   return (
     <div className="flex items-center justify-between px-6 pb-1 pt-2.5 text-[13px] font-semibold text-foreground">
-      <span className="tabular">9:41</span>
+      <span className="tabular">{time}</span>
       <div className="flex items-center gap-1.5">
         <Signal className="h-3.5 w-3.5" />
         <Wifi className="h-3.5 w-3.5" />

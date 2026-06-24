@@ -73,17 +73,17 @@ export default function WalletPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl bg-[#eaf1ff] p-4">
+        <div className="rounded-2xl bg-surface-2 p-4 ring-1 ring-border">
           <div className="mb-3 flex items-center justify-between">
             <h3 className="text-[14px] font-bold text-foreground">T-Money</h3>
-            <span className="rounded-full bg-white px-2 py-0.5 text-[11px] font-medium text-primary">{t("tmoney.linked")}</span>
+            <span className="rounded-full bg-card px-2 py-0.5 text-[11px] font-medium text-primary ring-1 ring-border">{t("tmoney.linked")}</span>
           </div>
           <div className="flex items-center gap-3">
-            <BrandMark brand="tmoney" size={40} ring={false} className="bg-white shadow-sm" />
+            <BrandMark brand="tmoney" size={40} ring={false} className="bg-card shadow-sm" />
 
             <div className="flex-1">
               <p className="text-[13px] font-semibold text-foreground">{t("tmoney.buySubway")}</p>
-              <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-white">
+              <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-card">
                 <div className="h-full w-1/3 rounded-full bg-primary" />
               </div>
             </div>

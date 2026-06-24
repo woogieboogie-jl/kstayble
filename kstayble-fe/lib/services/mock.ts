@@ -42,8 +42,20 @@ export function fakeHash(seed: string): string {
   return "0x" + out.slice(0, 64)
 }
 
+const B58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+function base58(hex: string): string {
+  let num = BigInt("0x" + hex)
+  let out = ""
+  while (num > 0n) {
+    out = B58[Number(num % 58n)] + out
+    num /= 58n
+  }
+  return out
+}
+// Reads like a real Open DID (z-multibase base58), distinct from the kpass id
+// (which is derived from a different hash slice — no shared bytes).
 function fakeDid(seed: string): string {
-  return `did:omn:${fakeHash(seed).slice(2, 34)}`
+  return `did:omn:z6Mk${base58(fakeHash("didkey:" + seed).slice(2)).slice(0, 40)}`
 }
 
 const NATIONALITY: Record<UserType, { label: string; flag: string }> = {

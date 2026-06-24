@@ -46,6 +46,8 @@
   --surface-1: #fffdf8;
   --surface-2: #ece6da;
   --seal: #c2392f;
+  --success: #5b7553; /* 쑥색 sage — positive amounts, verified states */
+  --success-surface: #e7ede4; /* light sage chip background */
 
   /* legacy tile tokens (now unused — tiles are tonal) */
   --c-topup: #c2392f;
@@ -131,6 +133,8 @@
   --color-seal: var(--seal);
   --color-surface-1: var(--surface-1);
   --color-surface-2: var(--surface-2);
+  --color-success: var(--success);
+  --color-success-surface: var(--success-surface);
 
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;

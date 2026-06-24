@@ -40,6 +40,8 @@ interface AppContextValue {
   hydrated: boolean
   // onboarding
   reset: () => void
+  /** load the populated demo identity (Peter Parker) — presenter "skip the ceremony" path */
+  loadDemoAccount: () => void
   verifyIdentity: (userType: UserType, method: IdentityMethod) => Promise<Identity>
   issueCapsule: (identity: Identity, userType: UserType) => Promise<KPassCapsule>
   // wallet
@@ -79,10 +81,13 @@ interface PersistShape {
 }
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
-  const [session, setSession] = useState<Session>(DEFAULT_SESSION)
-  const [transactions, setTransactions] = useState<Transaction[]>(DEFAULT_TRANSACTIONS)
-  const [events, setEvents] = useState<ChainEvent[]>(DEFAULT_EVENTS)
-  const [notifications, setNotifications] = useState<AppNotification[]>(DEFAULT_NOTIFICATIONS)
+  // Start as a GUEST so a fresh browser sees the K-Pass issuance ceremony (the
+  // Track-2 thesis) — never someone else's pre-filled account. Returning users
+  // are restored from localStorage in the hydration effect below.
+  const [session, setSession] = useState<Session>(GUEST_SESSION)
+  const [transactions, setTransactions] = useState<Transaction[]>([])
+  const [events, setEvents] = useState<ChainEvent[]>([])
+  const [notifications, setNotifications] = useState<AppNotification[]>([])
   const [dismissedNudges, setDismissedNudges] = useState<string[]>([])
   const [hydrated, setHydrated] = useState(false)
 
@@ -112,7 +117,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   useEffect(() => {
-    if (!hydrated) return
+    // Only persist a real, onboarded session — never a partial/guest shell, so a
+    // mid-ceremony refresh or a sign-out can't leave orphaned state on disk.
+    if (!hydrated || !session.onboarded) return
     const payload: PersistShape = { session, transactions, events, notifications, dismissedNudges }
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(payload))
@@ -122,6 +129,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }, [hydrated, session, transactions, events, notifications, dismissedNudges])
 
   const reset = useCallback(() => {
+    try { localStorage.removeItem(STORAGE_KEY) } catch { /* unavailable */ }
     setSession(GUEST_SESSION)
     setTransactions([])
     setEvents([])
@@ -131,13 +139,25 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setCopilotOpen(false)
   }, [])
 
+  const loadDemoAccount = useCallback(() => {
+    setSession(DEFAULT_SESSION)
+    setTransactions(DEFAULT_TRANSACTIONS)
+    setEvents(DEFAULT_EVENTS)
+    setNotifications(DEFAULT_NOTIFICATIONS)
+    setDismissedNudges([])
+  }, [])
+
   const verifyIdentity = useCallback(async (userType: UserType, method: IdentityMethod) => {
-    const identity = await identityService.verify(method, userType)
-    setSession((s) => ({ ...s, userType, identity }))
-    return identity
+    // Do NOT write a partial identity to the session here — the confirm screen
+    // holds it in local state and issueCapsule writes the full session atomically.
+    return identityService.verify(method, userType)
   }, [])
 
   const issueCapsule = useCallback(async (identity: Identity, userType: UserType) => {
+    // Fresh slate so a re-onboard never mixes identities in the wallet / chain log.
+    setTransactions([])
+    setNotifications([])
+    setDismissedNudges([])
     const capsule = await capsuleService.issue(identity, userType)
     const issuedEvent = await chainService.log(
       "KPassIssued",
@@ -147,7 +167,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     const linkedEvent = await chainService.log("WalletLinked", "KRW stable wallet linked to K-Pass Capsule")
 
     setSession((s) => ({ ...s, onboarded: true, userType, identity, capsule, wallet }))
-    setEvents((e) => [issuedEvent, linkedEvent, ...e])
+    setEvents([issuedEvent, linkedEvent])
     return capsule
   }, [])
 
@@ -174,6 +194,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   const pay = useCallback(
     async (merchant: string, amountKRW: number, category: Transaction["category"]) => {
+      // never confirm a spend the wallet can't fund (no ghost-spend / phantom chain event)
+      if (Math.abs(amountKRW) > sessionRef.current.wallet.balanceKRW) return
       const evt = await chainService.log(
         "PaymentAuthorized",
         `Payment of ₩${amountKRW.toLocaleString()} to ${merchant}`,
@@ -203,6 +225,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
 
   // Convert leftover KRW → vouchers. NOT a payment: logs VoucherRedeemed.
   const convertLeftover = useCallback(async (amountKRW: number) => {
+    if (Math.abs(amountKRW) > sessionRef.current.wallet.balanceKRW) return
     const evt = await chainService.log(
       "VoucherRedeemed",
       `Converted ₩${amountKRW.toLocaleString()} leftover to T-money + coupons`,
@@ -219,7 +242,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         amountKRW: -Math.abs(amountKRW),
         date: new Date().toISOString(),
         icon: "ticket",
-        iconBg: "#e6f7f1",
+        iconBg: "#e7ede4",
         chainEvent: "VoucherRedeemed",
         txHash: evt.txHash,
       },
@@ -277,6 +300,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       notifications,
       hydrated,
       reset,
+      loadDemoAccount,
       verifyIdentity,
       issueCapsule,
       topUp,
@@ -298,7 +322,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       dismissNudge,
     }),
     [
-      session, transactions, events, notifications, hydrated, reset, verifyIdentity, issueCapsule,
+      session, transactions, events, notifications, hydrated, reset, loadDemoAccount, verifyIdentity, issueCapsule,
       topUp, pay, convertLeftover, dismissNotification, markAllRead, recommendBenefits, chat,
       copilotOpen, openCopilot, closeCopilot, copilotThread, copilotThinking, copilotSeed, copilotSend,
       copilotPushAi, dismissedNudges, dismissNudge,

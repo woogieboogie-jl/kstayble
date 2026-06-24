@@ -93,7 +93,7 @@ export default function PassPage() {
                 </span>
                 <div className="min-w-0 flex-1">
                   <p className="text-[12px] font-semibold text-foreground">{t(`evt.${e.type}`)}</p>
-                  <p className="truncate text-[11px] text-muted-foreground">{e.summary}</p>
+                  <p className="truncate text-[10px] text-muted-foreground/70">🔒 {t("pass.localOnly")} · {e.summary}</p>
                 </div>
                 <span className="font-mono text-[10px] text-muted-foreground">{shortHash(e.txHash)}</span>
               </div>

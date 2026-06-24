@@ -12,7 +12,7 @@ import { pickContext, type CopilotCommand, D_DAY, TRIP_REMAINING_PCT } from "@/l
 import { STAY } from "@/lib/mock-data"
 import { cn } from "@/lib/utils"
 
-type Phase = "idle" | "processing" | "done"
+type Phase = "idle" | "confirm" | "processing" | "done"
 
 export function SealCopilot() {
   const pathname = usePathname()
@@ -31,6 +31,7 @@ export function SealCopilot() {
   const [input, setInput] = useState("")
   const [whisperOpen, setWhisperOpen] = useState(false)
   const endRef = useRef<HTMLDivElement>(null)
+  const running = useRef<Set<string>>(new Set())
 
   // show the whisper once on entering a screen that has one; auto-retract to a dot
   useEffect(() => {
@@ -74,8 +75,15 @@ export function SealCopilot() {
     return t("nav.home")
   })()
 
+  const isMoney = (k: CopilotCommand["kind"]) => k === "pay" || k === "topup" || k === "convert"
+  const doneSubtitle = (k: CopilotCommand["kind"]) =>
+    k === "pay" ? t("modal.loggedOmnione.pay")
+      : k === "topup" ? t("modal.loggedOmnione.topup")
+        : k === "convert" ? t("modal.loggedOmnione.convert")
+          : t("modal.loggedOmnione.markRead")
+
   const runCommand = async (c: CopilotCommand) => {
-    if (phase[c.id] === "processing") return
+    if (running.current.has(c.id)) return
     if (c.kind === "navigate" && c.href) {
       closeCopilot()
       router.push(c.href)
@@ -85,6 +93,13 @@ export function SealCopilot() {
       if (c.sayKey) copilotPushAi(t(c.sayKey))
       return
     }
+    // money actions require a deliberate second tap — never a single-tap spend
+    if (isMoney(c.kind) && (phase[c.id] ?? "idle") !== "confirm") {
+      setPhase((p) => ({ ...p, [c.id]: "confirm" }))
+      setTimeout(() => setPhase((p) => (p[c.id] === "confirm" ? { ...p, [c.id]: "idle" } : p)), 5000)
+      return
+    }
+    running.current.add(c.id) // synchronous lock — blocks the double-tap race
     setPhase((p) => ({ ...p, [c.id]: "processing" }))
     try {
       if (c.kind === "pay" && c.merchant && c.amountKRW != null) await pay(c.merchant, c.amountKRW, (c.category as never) ?? "shopping")
@@ -92,6 +107,7 @@ export function SealCopilot() {
       else if (c.kind === "convert" && c.amountKRW != null) await convertLeftover(c.amountKRW)
       else if (c.kind === "markRead") markAllRead()
     } finally {
+      running.current.delete(c.id)
       setPhase((p) => ({ ...p, [c.id]: "done" }))
       setTimeout(() => setPhase((p) => ({ ...p, [c.id]: "idle" })), 1600)
     }
@@ -110,7 +126,7 @@ export function SealCopilot() {
   return (
     <>
       {/* FAB — pinned inside the phone column, above the docked nav */}
-      <div className="pointer-events-none fixed bottom-0 left-1/2 z-40 h-0 w-full max-w-[420px] -translate-x-1/2">
+      <div className="pointer-events-none fixed bottom-0 left-1/2 z-[60] h-0 w-full max-w-[420px] -translate-x-1/2">
         <div className="absolute bottom-[92px] right-4 flex items-center gap-2">
           {whisper && (
             <button
@@ -131,7 +147,7 @@ export function SealCopilot() {
             type="button"
             onClick={() => (copilotOpen ? closeCopilot() : openCopilot())}
             aria-label="K-Stayble AI"
-            className="card-credential shadow-card-hero pointer-events-auto relative grid h-[54px] w-[54px] place-items-center rounded-full text-white"
+            className="bg-brand-gradient shadow-card-hero pointer-events-auto relative grid h-[54px] w-[54px] place-items-center rounded-full text-white"
             style={{ animation: "breathe 2.6s ease-in-out infinite" }}
           >
             <span className="text-[24px] font-bold leading-none" style={{ fontFamily: "var(--font-sans)" }}>信</span>
@@ -159,31 +175,44 @@ export function SealCopilot() {
           <div className="space-y-2">
             {ctx.commands.map((c) => {
               const ph = phase[c.id] ?? "idle"
+              const confirming = ph === "confirm"
               return (
                 <button
                   key={c.id}
                   type="button"
                   onClick={() => runCommand(c)}
                   disabled={ph === "processing"}
-                  className="pressable flex w-full items-center gap-3 rounded-2xl bg-surface-2 px-3.5 py-3 text-left ring-1 ring-border"
+                  className={cn(
+                    "pressable flex w-full items-center gap-3 rounded-2xl px-3.5 py-3 text-left ring-1",
+                    confirming ? "bg-primary/5 ring-primary" : "bg-surface-2 ring-border",
+                  )}
                 >
                   <span className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-xl bg-card text-primary ring-1 ring-border">
                     {ph === "processing" ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : ph === "done" ? (
-                      <Check className="h-4 w-4 text-emerald-600" />
+                      <Check className="h-4 w-4 text-success" />
                     ) : (
                       <AppIcon name={c.icon as IconKey} className="h-[18px] w-[18px]" />
                     )}
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-[13px] font-semibold text-foreground">{c.label ?? t(c.labelKey ?? "")}</p>
-                    <p className="truncate text-[11px] text-muted-foreground">
-                      {ph === "done" ? t("modal.loggedOmnione") : c.reason ?? ""}
+                    <p className={cn("truncate text-[11px]", confirming ? "font-semibold text-primary" : "text-muted-foreground")}>
+                      {ph === "done"
+                        ? doneSubtitle(c.kind)
+                        : confirming
+                          ? lang === "ko" ? "한 번 더 눌러 확인" : "Tap again to confirm"
+                          : c.reason ?? ""}
                     </p>
                   </div>
                   {c.amountKRW != null && ph !== "done" && (
-                    <span className="tabular flex-shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary">
+                    <span
+                      className={cn(
+                        "tabular flex-shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold",
+                        confirming ? "bg-primary text-white" : "bg-primary/10 text-primary",
+                      )}
+                    >
                       {money(c.amountKRW)}
                     </span>
                   )}

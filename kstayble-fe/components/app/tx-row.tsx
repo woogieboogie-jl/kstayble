@@ -41,7 +41,7 @@ export function TxRow({ tx, usdRate, userType }: { tx: Transaction; usdRate: num
           <p className="text-[11px] text-muted-foreground">{formatTxDate(tx.date)}</p>
         </div>
         <div className="text-right">
-          <p className={cn("tabular text-[14px] font-bold", positive ? "text-[#5b7553]" : "text-foreground")}>{amountStr}</p>
+          <p className={cn("tabular text-[14px] font-bold", positive ? "text-success" : "text-foreground")}>{amountStr}</p>
           <span className="text-[10px] text-muted-foreground">OmniOne Chain</span>
         </div>
       </button>

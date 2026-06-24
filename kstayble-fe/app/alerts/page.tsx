@@ -59,7 +59,7 @@ export default function AlertsPage() {
                 key={n.id}
                 className={cn(
                   "flex w-full items-start gap-3 rounded-2xl p-3.5 ring-1",
-                  n.read ? "bg-white ring-border" : "bg-primary/[0.04] ring-primary/20",
+                  n.read ? "bg-card ring-border" : "bg-primary/[0.04] ring-primary/20",
                 )}
               >
                 <span

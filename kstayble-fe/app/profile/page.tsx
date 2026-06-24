@@ -43,14 +43,14 @@ export default function ProfilePage() {
       <PageHeader title={t("profile.title")} />
 
       <div className="space-y-6 px-5 pt-1">
-        <div className="rounded-2xl bg-white p-4 shadow-[0_2px_14px_rgba(20,22,30,0.06)] ring-1 ring-border">
+        <div className="rounded-2xl bg-card p-4 shadow-[0_2px_14px_rgba(20,22,30,0.06)] ring-1 ring-border">
           <div className="flex items-center gap-3">
             <img src={identity?.photoUrl ?? "/portraits/peter.jpg"} alt={name} className="h-14 w-14 rounded-full object-cover ring-1 ring-border" />
             <div className="min-w-0 flex-1">
               <h2 className="truncate text-[16px] font-bold text-foreground">{name}</h2>
               <p className="truncate text-[12px] text-muted-foreground">{email}</p>
               <div className="mt-1.5 flex flex-wrap gap-1.5">
-                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
+                <span className="inline-flex items-center gap-1 rounded-full bg-success-surface px-2 py-0.5 text-[10px] font-semibold text-success">
                   <BadgeCheck className="h-3 w-3" /> {t("profile.verified")}
                 </span>
                 {capsule && (
@@ -91,7 +91,7 @@ export default function ProfilePage() {
 
         <div>
           <SectionTitle>{t("profile.settings")}</SectionTitle>
-          <div className="divide-y divide-border rounded-2xl bg-white ring-1 ring-border">
+          <div className="divide-y divide-border rounded-2xl bg-card ring-1 ring-border">
             {MENU.map(({ icon: Icon, title, subtitle }) => (
               <button key={title} type="button" className="pressable flex w-full items-center gap-3 px-4 py-3 text-left hover:bg-secondary/60">
                 <span className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-xl bg-secondary text-foreground/70">

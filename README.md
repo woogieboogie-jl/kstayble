@@ -92,6 +92,23 @@ flowchart LR
 VoucherRedeemed · PartnerSettlementLogged` — only event hashes are written on-chain; personal data and
 payment originals remain off-chain (**Privacy Edge**: selective disclosure, ZKP-ready).
 
+### RaonSecure / OmniOne — where the two solutions plug in
+
+라온시큐어 OmniOne의 두 솔루션(**Open DID**, **OmniOne Chain**)과 필수 요소 **모바일 신분증(OmniOne CX)** 은
+이 아키텍처의 **세 개 코드 seam**에 정확히 들어갑니다 — 데모는 같은 인터페이스에 mock을, 결선엔 실제 SDK 어댑터를 교체만 합니다:
+
+| 통합 지점 (코드 seam) | OmniOne 솔루션 | 역할 | 해커톤 |
+|---|---|---|---|
+| `IdentityService.verify()` | **Mobile ID / OmniOne CX** | 본인확인 (내국인=모바일 신분증 · 외국인=여권 eKYC) | 필수 |
+| `CapsuleService.issue()` · VP 검증 | **OmniOne Open DID** | K-Pass Capsule(VC) 발급·검증 · Selective Disclosure | +5% |
+| `ChainService.log()` | **OmniOne Chain** | 발급·결제·정산 이벤트를 **해시로** 기록 (감사·추적) | +5% |
+
+> 본인확인(CX) → Open DID로 K-Pass Capsule(VC) 발급 → 원화 결제 → OmniOne Chain에 이벤트 해시 기록 →
+> 가맹점이 **Open DID VP**로 자격 검증 → 정산. 신원 소스가 달라도 서비스 권한은 K-Pass로 표준화됩니다.
+
+전체 시퀀스 다이어그램(① 발급 ② 결제 ③ **가맹점 VP 검증**)과 Privacy Edge on/off-chain 표는
+**[`kstayble-fe/docs/ARCHITECTURE.md`](./kstayble-fe/docs/ARCHITECTURE.md)** 에 있습니다.
+
 ### How the demo maps to the spec
 
 This repo is a **clickable Phase-0 demo**. Services are **mocked behind interfaces** so the UI is

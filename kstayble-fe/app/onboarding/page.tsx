@@ -67,7 +67,7 @@ function Dots({ index }: { index: number }) {
 
 export default function OnboardingPage() {
   const router = useRouter()
-  const { verifyIdentity, issueCapsule, session } = useApp()
+  const { verifyIdentity, issueCapsule, session, loadDemoAccount } = useApp()
   const { t, lang, setLang } = useLang()
   const [step, setStep] = useState<Step>("lang")
   const [selected, setSelected] = useState<UserType | null>(null)
@@ -131,6 +131,14 @@ export default function OnboardingPage() {
                 </button>
               ))}
             </div>
+
+            <button
+              type="button"
+              onClick={() => { loadDemoAccount(); router.push("/") }}
+              className="pressable mt-5 text-[12px] font-medium text-muted-foreground underline underline-offset-2"
+            >
+              {t("ob.skip")}
+            </button>
 
             <div className="mt-auto flex items-center gap-2 pt-8 text-[11px] text-muted-foreground">
               <BrandMark brand="omnione" size={16} ring={false} />
@@ -283,10 +291,10 @@ export default function OnboardingPage() {
               </span>
             </div>
 
-            <span className="mt-4 inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700">
+            <span className="mt-4 inline-flex items-center gap-1 rounded-full bg-success-surface px-2.5 py-1 text-[11px] font-semibold text-success">
               <Check className="h-3 w-3" /> {t("ob.confirm.chip")}
             </span>
-            <p className="mt-2 text-[11px] text-muted-foreground">{t("ob.confirm.caption")}</p>
+            <p className="mt-2 text-[11px] text-muted-foreground">{t(chosen?.method === "foreigner-id" ? "ob.confirm.caption.foreignerId" : chosen?.method === "passport-did" ? "ob.confirm.caption.passport" : "ob.confirm.caption.mobileId")}</p>
 
             <div className="mt-4 w-full rounded-2xl bg-surface-2 px-4 py-3 ring-1 ring-border">
               <p className="flex items-center justify-center gap-1.5 text-[16px] font-bold text-foreground">
@@ -327,8 +335,8 @@ export default function OnboardingPage() {
                   className="flex items-center gap-2.5 rounded-xl bg-surface-2 px-4 py-2.5 text-[13px] text-foreground ring-1 ring-border"
                   style={{ animation: `pop-in 0.4s ease-out ${i * 0.45 + 0.3}s both` }}
                 >
-                  <span className="grid h-5 w-5 place-items-center rounded-full bg-emerald-50">
-                    <Check className="h-3.5 w-3.5 text-emerald-600" />
+                  <span className="grid h-5 w-5 place-items-center rounded-full bg-success-surface">
+                    <Check className="h-3.5 w-3.5 text-success" />
                   </span>
                   {t(k)}
                 </div>
@@ -346,8 +354,8 @@ export default function OnboardingPage() {
         {step === "done" && session.capsule && (
           <div className="flex flex-1 flex-col">
             <div className="mb-3 flex items-center gap-2">
-              <span className="grid h-8 w-8 place-items-center rounded-full bg-emerald-50" style={{ animation: "pop-in 0.4s ease-out" }}>
-                <Check className="h-5 w-5 text-emerald-600" />
+              <span className="grid h-8 w-8 place-items-center rounded-full bg-success-surface" style={{ animation: "pop-in 0.4s ease-out" }}>
+                <Check className="h-5 w-5 text-success" />
               </span>
               <h1 className="text-[22px] font-extrabold tracking-tight text-foreground">{t("ob.done")}</h1>
             </div>
@@ -357,7 +365,7 @@ export default function OnboardingPage() {
 
             <div className="mt-4 flex flex-wrap gap-2">
               <span className="rounded-full bg-primary/8 px-3 py-1.5 text-[12px] font-semibold text-primary">
-                원화 지갑 ₩{session.wallet.balanceKRW.toLocaleString("en-US")}
+                {t("wallet.label")} ₩{session.wallet.balanceKRW.toLocaleString("en-US")}
               </span>
               <span className="rounded-full bg-surface-2 px-3 py-1.5 text-[12px] font-medium text-foreground ring-1 ring-border">{t("ob.done.tmoney")}</span>
               <span className="rounded-full bg-surface-2 px-3 py-1.5 text-[12px] font-medium text-foreground ring-1 ring-border">{t("ob.done.coupon")}</span>

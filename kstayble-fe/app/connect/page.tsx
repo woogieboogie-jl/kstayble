@@ -21,7 +21,7 @@ const CAT_ICON: Record<ActivityCategory, React.ComponentType<{ className?: strin
 function VerifiedBadge() {
   const { t } = useLang()
   return (
-    <span className="inline-flex flex-shrink-0 items-center gap-0.5 rounded-full bg-emerald-50 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-700">
+    <span className="inline-flex flex-shrink-0 items-center gap-0.5 rounded-full bg-success-surface px-1.5 py-0.5 text-[10px] font-semibold text-success">
       <BadgeCheck className="h-2.5 w-2.5" /> {t("connect.verified")}
     </span>
   )
@@ -91,17 +91,17 @@ function ActivityCard({ a, onOpen }: { a: Activity; onOpen: () => void }) {
         <span className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-lg bg-secondary text-primary">
           <Icon className="h-4 w-4" />
         </span>
-        <span className="truncate">{t(`connect.cat.${a.category}`)} · {a.place}</span>
-        <span className="ml-auto flex-shrink-0">{a.time}</span>
+        <span className="truncate">{t(`connect.cat.${a.category}`)} · {lang === "en" ? a.placeEn ?? a.place : a.place}</span>
+        <span className="ml-auto flex-shrink-0">{lang === "en" ? a.timeEn ?? a.time : a.time}</span>
       </div>
 
-      <h3 className="text-[15px] font-bold text-foreground">{a.title}</h3>
+      <h3 className="text-[15px] font-bold text-foreground">{lang === "en" ? a.titleEn ?? a.title : a.title}</h3>
 
       <div className="mt-2 flex flex-wrap items-center gap-1.5">
         <img src={a.hostPhoto} alt={a.host} className="h-6 w-6 rounded-full object-cover ring-1 ring-border" />
         <span className="text-[12px] font-semibold text-foreground">{a.host} {a.hostFlag}</span>
         <VerifiedBadge />
-        <span className="rounded-full bg-primary/8 px-1.5 py-0.5 text-[10px] font-semibold capitalize text-primary">{a.trustLevel}</span>
+        <span className="rounded-full bg-primary/8 px-1.5 py-0.5 text-[10px] font-semibold text-primary">{t(`connect.trust.${a.trustLevel}`)}</span>
       </div>
 
       <div className="mt-3 flex items-center justify-between">
@@ -129,7 +129,7 @@ function ActivityCard({ a, onOpen }: { a: Activity; onOpen: () => void }) {
 }
 
 function PeerCard({ p, onOpen }: { p: Peer; onOpen: () => void }) {
-  const { t } = useLang()
+  const { t, lang } = useLang()
   return (
     <button type="button" onClick={onOpen} className="pressable flex w-full items-center gap-3 rounded-2xl bg-card p-4 text-left ring-1 ring-border">
       <img src={p.photo} alt={p.name} className="h-12 w-12 flex-shrink-0 rounded-full object-cover ring-1 ring-border" />
@@ -142,7 +142,7 @@ function PeerCard({ p, onOpen }: { p: Peer; onOpen: () => void }) {
           <span className="rounded-full bg-primary/8 px-1.5 py-0.5 text-[10px] font-semibold text-primary">{t(`connect.role.${p.role}`)}</span>
           <span className="text-[10px] text-muted-foreground">{p.langs.join(" · ")}</span>
         </div>
-        <p className="mt-1 truncate text-[12px] text-muted-foreground">{p.bio}</p>
+        <p className="mt-1 truncate text-[12px] text-muted-foreground">{lang === "en" ? p.bioEn ?? p.bio : p.bio}</p>
       </div>
       <span className="grid h-9 w-9 flex-shrink-0 place-items-center rounded-full bg-secondary text-primary">
         <MessageCircle className="h-4 w-4" />

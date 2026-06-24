@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { QrCode, ChevronRight } from "lucide-react"
@@ -25,12 +25,18 @@ const TABS: { key: ServiceCategory; labelKey: string }[] = [
 
 export default function HomePage() {
   const router = useRouter()
-  const { session, openCopilot } = useApp()
+  const { session, openCopilot, hydrated } = useApp()
   const { t } = useLang()
   const [activeTab, setActiveTab] = useState<ServiceCategory>("food")
   const [showReceive, setShowReceive] = useState(false)
   const [showTopUp, setShowTopUp] = useState(false)
   const [payItem, setPayItem] = useState<PayItem | null>(null)
+
+  // Fresh / signed-out visitors belong in the K-Pass ceremony, not a blank home.
+  useEffect(() => {
+    if (hydrated && !session.onboarded) router.replace("/onboarding")
+  }, [hydrated, session.onboarded, router])
+  if (!session.onboarded) return null
 
   const name = session.capsule?.holderName ?? session.identity?.displayName ?? t("home.guest")
   const items = SERVICE_ITEMS.filter((i) => i.category === activeTab)
@@ -62,7 +68,7 @@ export default function HomePage() {
             type="button"
             onClick={() => setShowReceive(true)}
             aria-label={t("home.qr")}
-            className="pressable grid w-[80px] flex-shrink-0 place-items-center rounded-3xl bg-white shadow-[0_2px_14px_rgba(20,22,30,0.08)] ring-1 ring-border"
+            className="pressable grid w-[80px] flex-shrink-0 place-items-center rounded-3xl bg-card shadow-[0_2px_14px_rgba(20,22,30,0.08)] ring-1 ring-border"
           >
             <span className="grid h-12 w-12 place-items-center rounded-2xl bg-secondary">
               <QrCode className="h-7 w-7 text-foreground" />

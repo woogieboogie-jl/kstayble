@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Sheet, SheetContent } from "@/components/app/sheet"
 import { QRCode } from "@/components/qr-code"
 import { Check, Loader2, ShieldCheck } from "lucide-react"
@@ -12,8 +12,8 @@ import type { Transaction } from "@/lib/types"
 function SuccessCheck() {
   return (
     <div className="grid place-items-center py-1">
-      <span className="grid h-12 w-12 place-items-center rounded-full bg-emerald-50" style={{ animation: "pop-in 0.3s ease-out" }}>
-        <Check className="h-6 w-6 text-emerald-600" />
+      <span className="grid h-12 w-12 place-items-center rounded-full bg-success-surface" style={{ animation: "pop-in 0.3s ease-out" }}>
+        <Check className="h-6 w-6 text-success" />
       </span>
     </div>
   )
@@ -45,14 +45,18 @@ export function TopUpModal({ open, onOpenChange }: { open: boolean; onOpenChange
   const { t, lang } = useLang()
   const [amount, setAmount] = useState(TOPUP_AMOUNTS[1])
   const [phase, setPhase] = useState<"choose" | "processing" | "done">("choose")
+  const busy = useRef(false)
 
   const confirm = async () => {
+    if (busy.current) return
+    busy.current = true
     setPhase("processing")
     await topUp(amount)
     setPhase("done")
     setTimeout(() => {
       onOpenChange(false)
       setPhase("choose")
+      busy.current = false
     }, 1200)
   }
 
@@ -61,7 +65,7 @@ export function TopUpModal({ open, onOpenChange }: { open: boolean; onOpenChange
       open={open}
       onOpenChange={(v) => {
         onOpenChange(v)
-        if (!v) setPhase("choose")
+        if (!v) { setPhase("choose"); busy.current = false }
       }}
     >
       <SheetContent title={phase === "done" ? t("modal.topupDone") : t("modal.topup")}>
@@ -121,18 +125,22 @@ export function PayModal({
   const { pay, session } = useApp()
   const { t, lang } = useLang()
   const [phase, setPhase] = useState<"confirm" | "processing" | "done">("confirm")
+  const busy = useRef(false)
 
   const amount = item?.amountKRW ?? 0
   const showUsd = session.userType !== "korean" && lang !== "ko"
+  const insufficient = amount > session.wallet.balanceKRW
 
   const confirm = async () => {
-    if (!item) return
+    if (!item || busy.current || insufficient) return
+    busy.current = true
     setPhase("processing")
     await pay(item.merchant, item.amountKRW, item.category)
     setPhase("done")
     setTimeout(() => {
       onOpenChange(false)
       setPhase("confirm")
+      busy.current = false
     }, 1400)
   }
 
@@ -141,7 +149,7 @@ export function PayModal({
       open={open}
       onOpenChange={(v) => {
         onOpenChange(v)
-        if (!v) setPhase("confirm")
+        if (!v) { setPhase("confirm"); busy.current = false }
       }}
     >
       <SheetContent title={phase === "done" ? t("modal.payDone") : t("modal.pay")}>
@@ -162,11 +170,11 @@ export function PayModal({
               </p>
               {showUsd && <p className="tabular text-[12px] text-muted-foreground">≈ {formatUSD(amount, session.wallet.usdRate)}</p>}
             </div>
-            <p className="text-center text-[12px] text-muted-foreground">{t("modal.payNote")}</p>
+            <p className="text-center text-[12px] text-muted-foreground">{insufficient ? (lang === "ko" ? "잔액이 부족해요" : "Insufficient balance") : t("modal.payNote")}</p>
             <button
               type="button"
               onClick={confirm}
-              disabled={phase === "processing"}
+              disabled={phase === "processing" || insufficient}
               className="bg-brand-gradient pressable flex w-full items-center justify-center gap-2 rounded-xl py-3 text-[14px] font-semibold text-white disabled:opacity-70"
             >
               {phase === "processing" && <Loader2 className="h-4 w-4 animate-spin" />}
