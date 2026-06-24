@@ -96,7 +96,7 @@ export function Logo({ size = 28, withWordmark = false }: { size?: number; withW
   return (
     <span className="inline-flex items-center gap-2">
       <Seal size={size} />
-      {withWordmark && <span className="text-[16px] font-bold tracking-tight text-foreground">K-Stayble</span>}
+      {withWordmark && <span className="text-[16px] font-bold tracking-tight text-foreground">K-Tour ID</span>}
     </span>
   )
 }

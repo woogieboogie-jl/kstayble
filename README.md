@@ -1,4 +1,4 @@
-# K-Stayble — AI Tourist Trust Wallet 🇰🇷
+# K-Tour ID — AI Tourist Trust Wallet 🇰🇷
 
 > 내·외국인 관광객을 위한 **AI 기반 디지털 관광 신뢰지갑**.
 > 모바일 신분증·여권 DID로 신원을 확인하고, **K-Pass Capsule**(디지털 관광 주민증)을 발급해
@@ -19,7 +19,7 @@ Foreign tourists in Korea hit structural walls — fragmented payments, Korean-o
 no domestic phone number, identity-verification barriers. Domestic travelers' local benefits,
 coupons and activity history are scattered across channels.
 
-**K-Stayble** issues every visitor a single verifiable credential — the **K-Pass Capsule** — that
+**K-Tour ID** issues every visitor a single verifiable credential — the **K-Pass Capsule** — that
 standardizes *service permission* (stay period, payment limit, eligible services, benefits) regardless
 of how the person was verified:
 
@@ -73,7 +73,7 @@ flowchart LR
     B2[DID / VC Manager<br/>Open DID]
     B3[Trust Profile Builder]
   end
-  subgraph Core["3 · K-Stayble Core"]
+  subgraph Core["3 · K-Tour ID Core"]
     C1[K-Pass Capsule Issuer<br/>VC: 체류·한도·혜택]
     C2[Payment & Policy Router]
     C3[KRW Stable Wallet]

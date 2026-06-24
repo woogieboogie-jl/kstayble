@@ -13,7 +13,7 @@ interface Msg {
 }
 
 const GREETING =
-  "안녕하세요 — K-Stayble 기술 어시스턴트입니다. 개발팀이 아키텍처(OmniOne · Open DID · OmniOne Chain), DID/VC, 가맹점 VP 검증, 온체인 프라이버시·보안 등을 정리해 두었어요. 무엇이든 물어보세요. (Ask me anything — I answer in your language.)"
+  "안녕하세요 — K-Tour ID 기술 어시스턴트입니다. 개발팀이 아키텍처(OmniOne · Open DID · OmniOne Chain), DID/VC, 가맹점 VP 검증, 온체인 프라이버시·보안 등을 정리해 두었어요. 무엇이든 물어보세요. (Ask me anything — I answer in your language.)"
 
 // light cleanup so any stray Markdown doesn't render as raw artifacts
 function clean(t: string): string {
@@ -82,7 +82,7 @@ export default function AskPage() {
           <div className="flex min-w-0 items-center gap-3">
             <Seal size={44} />
             <div className="min-w-0">
-              <h1 className="text-[20px] font-extrabold tracking-tight text-foreground">K-Stayble · 기술 Q&amp;A</h1>
+              <h1 className="text-[20px] font-extrabold tracking-tight text-foreground">K-Tour ID · 기술 Q&amp;A</h1>
               <p className="flex items-center gap-1.5 text-[12px] text-muted-foreground">
                 <ShieldCheck className="h-3.5 w-3.5 flex-shrink-0 text-primary" />
                 개발팀이 정리한 지식 기반 AI · OmniOne / Open DID

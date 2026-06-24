@@ -1,4 +1,4 @@
-// K-Stayble domain model.
+// K-Tour ID domain model.
 // Mirrors the product spec in docs/ (PDF): identity → K-Pass Capsule (VC)
 // → KRW stablecoin wallet → services → OmniOne Chain event log → AI benefits.
 

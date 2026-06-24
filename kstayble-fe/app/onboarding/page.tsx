@@ -108,7 +108,7 @@ export default function OnboardingPage() {
         {step === "lang" && (
           <div className="flex flex-1 flex-col items-center pt-10 text-center">
             <Seal size={88} stamp />
-            <p className="mt-5 text-[17px] font-bold tracking-tight text-foreground">K-Stayble</p>
+            <p className="mt-5 text-[17px] font-bold tracking-tight text-foreground">K-Tour ID</p>
             <h1 className="mt-4 text-[26px] font-extrabold leading-tight tracking-tight text-foreground">{t("ob.hero.title")}</h1>
             <p className="mt-2 max-w-[280px] text-[13px] leading-relaxed text-muted-foreground">{t("ob.hero.sub")}</p>
 

@@ -9,7 +9,7 @@ export interface Faq {
 }
 
 export const ASK_SUGGESTIONS = [
-  "K-Stayble이 뭐예요?",
+  "K-Tour ID이 뭐예요?",
   "모바일 신분증·여권은 어떻게 쓰여요?",
   "DID랑 VC(K-Pass) 차이는?",
   "가맹점은 뭘 검증하나요?",
@@ -21,8 +21,8 @@ export const ASK_SUGGESTIONS = [
 export const ASK_FAQ: Faq[] = [
   {
     keys: ["뭐예요", "뭔가요", "뭐하는", "소개", "프로젝트", "what is", "what's", "kstayble", "k-stayble", "about"],
-    a: "K-Stayble은 AI 기반 '관광 신뢰 지갑'입니다. 내국인(모바일 신분증)·외국인 관광객(여권 DID)·장기체류 외국인 누구든 K-Pass Capsule(VC) 한 장을 발급받아, 신원 소스가 달라도 서비스 권한(체류·결제한도·자격·혜택)을 표준화합니다. 원화 스테이블 지갑으로 교통·식사·쇼핑을 결제하고, 모든 신뢰 이벤트는 OmniOne Chain에 기록되며, AI가 남은 원화를 쿠폰으로 전환합니다.",
-    aEn: "K-Stayble is an AI 'tourist trust wallet.' Korean residents (Mobile ID), foreign tourists (Passport DID) and long-stay foreigners each get one K-Pass Capsule (a VC), so a different identity source still standardizes into the same service permissions (stay, payment limit, eligibility, benefits). You pay for transit/food/shopping from a KRW-stablecoin wallet, every trust event is logged on the OmniOne Chain, and the AI turns leftover KRW into coupons.",
+    a: "K-Tour ID은 AI 기반 '관광 신뢰 지갑'입니다. 내국인(모바일 신분증)·외국인 관광객(여권 DID)·장기체류 외국인 누구든 K-Pass Capsule(VC) 한 장을 발급받아, 신원 소스가 달라도 서비스 권한(체류·결제한도·자격·혜택)을 표준화합니다. 원화 스테이블 지갑으로 교통·식사·쇼핑을 결제하고, 모든 신뢰 이벤트는 OmniOne Chain에 기록되며, AI가 남은 원화를 쿠폰으로 전환합니다.",
+    aEn: "K-Tour ID is an AI 'tourist trust wallet.' Korean residents (Mobile ID), foreign tourists (Passport DID) and long-stay foreigners each get one K-Pass Capsule (a VC), so a different identity source still standardizes into the same service permissions (stay, payment limit, eligibility, benefits). You pay for transit/food/shopping from a KRW-stablecoin wallet, every trust event is logged on the OmniOne Chain, and the AI turns leftover KRW into coupons.",
   },
   {
     keys: ["모바일 신분증", "mobile id", "신분증", "내국인", "resident", "여권", "passport", "ekyc", "본인확인", "외국인등록증", "arc"],
@@ -104,8 +104,8 @@ export function matchFaq(question: string): string {
   const en = isEnglish(question)
   if (GREETING.test(question.trim())) {
     return en
-      ? "Hi! I'm the K-Stayble technical assistant. Ask me about the architecture (OmniOne · Open DID · OmniOne Chain), DID vs VC, merchant VP verification, on-chain privacy, revocation, ZKP, or what changes for the finals."
-      : "안녕하세요! K-Stayble 기술 어시스턴트예요. 아키텍처(OmniOne · Open DID · OmniOne Chain), DID/VC 차이, 가맹점 VP 검증, 온체인 프라이버시, 폐기, ZKP, 데모→결선 계획 등 무엇이든 편하게 물어보세요."
+      ? "Hi! I'm the K-Tour ID technical assistant. Ask me about the architecture (OmniOne · Open DID · OmniOne Chain), DID vs VC, merchant VP verification, on-chain privacy, revocation, ZKP, or what changes for the finals."
+      : "안녕하세요! K-Tour ID 기술 어시스턴트예요. 아키텍처(OmniOne · Open DID · OmniOne Chain), DID/VC 차이, 가맹점 VP 검증, 온체인 프라이버시, 폐기, ZKP, 데모→결선 계획 등 무엇이든 편하게 물어보세요."
   }
   let best: { score: number; f: Faq } | null = null
   for (const f of ASK_FAQ) {
@@ -114,6 +114,6 @@ export function matchFaq(question: string): string {
   }
   if (best) return en ? best.f.aEn : best.f.a
   return en
-    ? "I'm the K-Stayble technical assistant. Try asking about on-chain privacy (hash-only), DID vs VC, merchant VP verification, revocation, ZKP, the 2-layer architecture, or what changes for the finals."
-    : "저는 K-Stayble 기술 어시스턴트예요. 온체인 프라이버시(해시만), DID/VC 차이, 가맹점 VP 검증, 폐기, ZKP, 2-레이어 아키텍처, 결선 변경점 등을 물어봐 주세요."
+    ? "I'm the K-Tour ID technical assistant. Try asking about on-chain privacy (hash-only), DID vs VC, merchant VP verification, revocation, ZKP, the 2-layer architecture, or what changes for the finals."
+    : "저는 K-Tour ID 기술 어시스턴트예요. 온체인 프라이버시(해시만), DID/VC 차이, 가맹점 VP 검증, 폐기, ZKP, 2-레이어 아키텍처, 결선 변경점 등을 물어봐 주세요."
 }

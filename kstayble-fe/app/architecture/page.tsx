@@ -2,9 +2,9 @@ import type { Metadata } from "next"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "K-Stayble — 기술 아키텍처 (To-Be)",
+  title: "K-Tour ID — 기술 아키텍처 (To-Be)",
   description:
-    "K-Stayble 기술 아키텍처: OmniOne CX · Open DID · OmniOne Chain 매핑, DID/VC/VP, 가맹점 검증, Privacy Edge, 2-레이어, ZKP, 데모↔결선 seam, 시퀀스 플로우.",
+    "K-Tour ID 기술 아키텍처: OmniOne CX · Open DID · OmniOne Chain 매핑, DID/VC/VP, 가맹점 검증, Privacy Edge, 2-레이어, ZKP, 데모↔결선 seam, 시퀀스 플로우.",
 }
 
 /* ── small server-side presentational helpers ─────────────────────────── */
@@ -84,7 +84,7 @@ export default function ArchitecturePage() {
       <div className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur-md">
         <div className="mx-auto flex max-w-[940px] items-center justify-between px-5 py-3">
           <Link href="/" className="text-[13px] font-medium text-muted-foreground hover:text-foreground">
-            ← K-Stayble
+            ← K-Tour ID
           </Link>
           <Link href="/ask" className="text-[13px] font-semibold text-primary hover:underline">
             기술 Q&amp;A AI →
@@ -100,7 +100,7 @@ export default function ArchitecturePage() {
           </div>
           <div>
             <p className="font-mono text-[11px] uppercase tracking-[0.28em] text-muted-foreground">
-              K-Stayble · 기술 아키텍처 (To-Be)
+              K-Tour ID · 기술 아키텍처 (To-Be)
             </p>
             <h1 className="mt-3 text-[clamp(28px,6vw,48px)] font-extrabold leading-[1.06] tracking-tight text-foreground">
               신원 한 번이<br />권한 한 장으로
@@ -193,7 +193,7 @@ export default function ArchitecturePage() {
               <span className="text-muted-foreground">↘</span>
               <Node>Open DID</Node>
             </Layer>
-            <Layer tag="L3" title="K-Stayble 코어">
+            <Layer tag="L3" title="K-Tour ID 코어">
               <Node>결제·정책 라우터 (VC 속성=정책)</Node>
               <Node>KRW 스테이블 지갑</Node>
               <Node>AI 혜택 라우터 · 이상탐지</Node>

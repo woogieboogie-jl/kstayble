@@ -14,10 +14,10 @@ const inter = Inter({
 // (Apple SD Gothic Neo / Malgun Gothic / Noto Sans KR) — no webfont gamble.
 
 export const metadata: Metadata = {
-  title: "K-Stayble — AI Tourist Trust Wallet",
+  title: "K-Tour ID — AI Tourist Trust Wallet",
   description:
-    "K-Stayble issues a digital tourism resident pass (K-Pass Capsule) on Mobile ID & Passport DID, linking KRW stablecoin payments and AI benefits for visitors to Korea.",
-  generator: "K-Stayble",
+    "K-Tour ID issues a digital tourism resident pass (K-Pass Capsule) on Mobile ID & Passport DID, linking KRW stablecoin payments and AI benefits for visitors to Korea.",
+  generator: "K-Tour ID",
 }
 
 export const viewport: Viewport = {

@@ -146,7 +146,7 @@ export function SealCopilot() {
           <button
             type="button"
             onClick={() => (copilotOpen ? closeCopilot() : openCopilot())}
-            aria-label="K-Stayble AI"
+            aria-label="K-Tour ID AI"
             className="bg-brand-gradient shadow-card-hero pointer-events-auto relative grid h-[54px] w-[54px] place-items-center rounded-full text-white"
             style={{ animation: "breathe 2.6s ease-in-out infinite" }}
           >

@@ -167,8 +167,8 @@ export const mockBenefitService: BenefitService = {
     const benefit = m.includes("coupon") || m.includes("benefit") || m.includes("혜택") || m.includes("쿠폰") || m.includes("남은")
     if (food)
       return ko
-        ? "오늘은 서대문 후라이드 치킨 추천드려요 (₩65,000, ★4.9). K-Stayble로 결제하면 배민 제휴 10% 쿠폰이 붙어요. 적용해 드릴까요?"
-        : "For tonight I'd suggest Korean fried chicken in Seodaemun (₩65,000, ★4.9). Paying with K-Stayble gives you a 10% Baemin partner coupon. Want me to apply it?"
+        ? "오늘은 서대문 후라이드 치킨 추천드려요 (₩65,000, ★4.9). K-Tour ID로 결제하면 배민 제휴 10% 쿠폰이 붙어요. 적용해 드릴까요?"
+        : "For tonight I'd suggest Korean fried chicken in Seodaemun (₩65,000, ★4.9). Paying with K-Tour ID gives you a 10% Baemin partner coupon. Want me to apply it?"
     if (transit)
       return ko
         ? "K-Pass 캡슐에 이미 T-money가 연동돼 있어요. 지하철 개찰구에 폰을 태그하면 원화 잔액에서 차감되고, 출국 시 남은 잔액은 교통 바우처로 전환돼요."
@@ -178,7 +178,7 @@ export const mockBenefitService: BenefitService = {
         ? "잔액 ₩1.52M, 체류 12일 남았어요. 예상 잔여분(~₩180,000)을 올리브영·박물관 쿠폰으로 전환해 낭비 없게 해드릴 수 있어요. 설정할까요?"
         : "You have ₩1.52M and 12 days left. I can convert your projected leftover (~₩180,000) into Olive Young + museum coupons so nothing goes to waste. Shall I set that up?"
     return ko
-      ? "저는 K-Stayble 가이드예요. 음식·교통·쇼핑·의료, 또는 남은 원화를 쿠폰·체험 NFT로 바꾸는 방법까지 무엇이든 물어보세요."
-      : "I'm your K-Stayble guide. Ask me about food, transport, shopping, medical, or how to turn your leftover KRW into coupons and experience NFTs."
+      ? "저는 K-Tour ID 가이드예요. 음식·교통·쇼핑·의료, 또는 남은 원화를 쿠폰·체험 NFT로 바꾸는 방법까지 무엇이든 물어보세요."
+      : "I'm your K-Tour ID guide. Ask me about food, transport, shopping, medical, or how to turn your leftover KRW into coupons and experience NFTs."
   },
 }

@@ -41,7 +41,7 @@ export default function ConnectChatPage() {
       if (!touched.current) {
         const ko = lang === "ko"
         setMessages([
-          { id: "g1", fromMe: false, text: ko ? "안녕하세요! K-Stayble에서 연결됐네요 🙂" : "Hi! Nice to connect on K-Stayble 🙂", time: ko ? "오후 5:01" : "5:01 PM" },
+          { id: "g1", fromMe: false, text: ko ? "안녕하세요! K-Tour ID에서 연결됐네요 🙂" : "Hi! Nice to connect on K-Tour ID 🙂", time: ko ? "오후 5:01" : "5:01 PM" },
           { id: "g2", fromMe: true, text: ko ? "반가워요! 같이 하고 싶어서 연락드려요." : "Hi! I'd love to join you.", time: ko ? "오후 5:02" : "5:02 PM" },
           { id: "g3", fromMe: false, text: ko ? "좋아요 — 검증된 분이라 안심돼요. 언제 편하세요?" : "Great — you're verified, so I feel safe. When works for you?", time: ko ? "오후 5:03" : "5:03 PM" },
         ])

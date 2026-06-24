@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils"
 
 /**
- * 도장 (dojang) — a Korean name seal in 인주 red. Used as the K-Stayble brand
+ * 도장 (dojang) — a Korean name seal in 인주 red. Used as the K-Tour ID brand
  * mark and the credential verification stamp. Character 信 = "trust".
  */
 export function Seal({
