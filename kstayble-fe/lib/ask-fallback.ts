@@ -96,9 +96,17 @@ function hit(q: string, key: string): boolean {
   return q.includes(k)
 }
 
+// greetings / thanks at the start of the message → a warm, non-question reply
+const GREETING = /^\s*(안녕|안뇽|하이|하잉|ㅎㅇ|반가|여보세요|hi|hello|hey|good\s?(morning|afternoon|evening)|고마|감사|thank|thx)/i
+
 export function matchFaq(question: string): string {
   const q = question.toLowerCase()
   const en = isEnglish(question)
+  if (GREETING.test(question.trim())) {
+    return en
+      ? "Hi! I'm the K-Stayble technical assistant. Ask me about the architecture (OmniOne · Open DID · OmniOne Chain), DID vs VC, merchant VP verification, on-chain privacy, revocation, ZKP, or what changes for the finals."
+      : "안녕하세요! K-Stayble 기술 어시스턴트예요. 아키텍처(OmniOne · Open DID · OmniOne Chain), DID/VC 차이, 가맹점 VP 검증, 온체인 프라이버시, 폐기, ZKP, 데모→결선 계획 등 무엇이든 편하게 물어보세요."
+  }
   let best: { score: number; f: Faq } | null = null
   for (const f of ASK_FAQ) {
     const score = f.keys.reduce((s, k) => (hit(q, k) ? s + 1 : s), 0)
@@ -106,6 +114,6 @@ export function matchFaq(question: string): string {
   }
   if (best) return en ? best.f.aEn : best.f.a
   return en
-    ? "Great question! K-Stayble issues a K-Pass Capsule (an Open DID VC) to residents and visitors alike, standardizing identity into KRW-stablecoin payments, OmniOne-Chain-logged trust events and AI benefits. Ask about on-chain privacy (hash-only), merchant VP verification, revocation, ZKP, or the 2-layer architecture for specifics."
-    : "좋은 질문이에요! K-Stayble은 내·외국인에게 K-Pass Capsule(Open DID VC)을 발급해 신원을 표준화하고, 원화 스테이블 결제·OmniOne Chain 기록·AI 혜택을 잇는 관광 신뢰 지갑입니다. 온체인 프라이버시(해시만), 가맹점 VP 검증, 폐기, ZKP, 2-레이어 아키텍처 등 더 구체적으로 물어보면 자세히 답해드려요."
+    ? "I'm the K-Stayble technical assistant. Try asking about on-chain privacy (hash-only), DID vs VC, merchant VP verification, revocation, ZKP, the 2-layer architecture, or what changes for the finals."
+    : "저는 K-Stayble 기술 어시스턴트예요. 온체인 프라이버시(해시만), DID/VC 차이, 가맹점 VP 검증, 폐기, ZKP, 2-레이어 아키텍처, 결선 변경점 등을 물어봐 주세요."
 }

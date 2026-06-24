@@ -3,6 +3,8 @@
 // instruction so judges can ask architecture questions and get accurate answers.
 // Uses Google Gemini (REST, no dependency). Falls back client-side if no key.
 
+import { geminiGenerate } from "@/lib/gemini"
+
 export const runtime = "nodejs"
 
 const KB = `You are the K-Stayble technical assistant, trained by the dev team (이재욱 / ShardLab) to field judges' questions at the 2026 블록체인·AI 해커톤 (한국디지털인증협회 · OmniOne / RaonSecure), Track 2 (MVP). Answer accurately, confidently, and concisely. Default to Korean; mirror the asker's language. Prefer 3–6 sentences. Reply in PLAIN TEXT — no Markdown (no **, ##, bullet dashes, or code fences). Be precise about what is actually implemented in the demo vs designed for the finals; if something is finals/roadmap-only, say so honestly. Never invent specifics you don't actually have.
@@ -51,26 +53,7 @@ export async function POST(req: Request) {
   }
   if (!message.trim()) return Response.json({ error: "empty" }, { status: 400 })
 
-  try {
-    const model = process.env.GEMINI_MODEL || "gemini-2.0-flash"
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${gemini}`,
-      {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          system_instruction: { parts: [{ text: KB }] },
-          contents: [{ role: "user", parts: [{ text: message }] }],
-          generationConfig: { maxOutputTokens: 800, temperature: 0.5 },
-        }),
-      },
-    )
-    if (!res.ok) return Response.json({ error: `gemini ${res.status}` }, { status: 502 })
-    const data = await res.json()
-    const reply: string =
-      data?.candidates?.[0]?.content?.parts?.map((p: { text?: string }) => p.text).join("") ?? ""
-    return Response.json({ reply })
-  } catch (e) {
-    return Response.json({ error: e instanceof Error ? e.message : "chat failed" }, { status: 500 })
-  }
+  const out = await geminiGenerate({ key: gemini, system: KB, message, maxOutputTokens: 800, temperature: 0.5 })
+  if (out.error) return Response.json({ error: out.error }, { status: 502 })
+  return Response.json({ reply: out.reply })
 }
